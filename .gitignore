@@ -1,0 +1,7 @@
+﻿/bin
+/.settings
+/build
+*.bak*
+/.classpath
+/nbproject/private
+/doc
