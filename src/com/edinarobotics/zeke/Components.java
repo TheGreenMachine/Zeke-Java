@@ -1,5 +1,9 @@
 package com.edinarobotics.zeke;
 
+import com.edinarobotics.zeke.subsystems.Drivetrain;
+import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
+import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -10,12 +14,45 @@ public class Components {
     
     private static Components instance;
     
+    // Subsystems
+    public final Drivetrain drivetrain;
+    public final DrivetrainStrafe drivetrainStrafe;
+    public final DrivetrainRotation drivetrainRotation;    
+    // END Subsystems
+    
+    // Analog Inputs
+    private static final int GYRO = 1;
+    // END Analog Inputs
+    
+    // Digital IO Constants
+        // Drivetrain Encoders
+        private static final int FRONT_LEFT_A  = 1;
+        private static final int FRONT_LEFT_B  = 2;
+        private static final int FRONT_RIGHT_A = 3;
+        private static final int FRONT_RIGHT_B = 4;
+        private static final int REAR_LEFT_A   = 5;
+        private static final int REAR_LEFT_B   = 6;
+        private static final int REAR_RIGHT_A  = 7;
+        private static final int REAR_RIGHT_B  = 8;
+    // END Digital IO constants
+    
+    // PWM constants
+        // Drivetrain
+        private static final int FRONT_LEFT_DRIVE  = 1;
+        private static final int REAR_LEFT_DRIVE   = 2;
+        private static final int FRONT_RIGHT_DRIVE = 3;
+        private static final int REAR_RIGHT_DRIVE  = 4;
+    // END PWM constants
+    
     /**
      * Private constructor for the Components singleton. This constructor
      * is only called once and handles creating all the robot subsystems.
      */
     private Components(){
-        
+        drivetrain = new Drivetrain(FRONT_LEFT_DRIVE, REAR_LEFT_DRIVE,
+                FRONT_RIGHT_DRIVE, REAR_RIGHT_DRIVE);
+        drivetrainStrafe = new DrivetrainStrafe(drivetrain);
+        drivetrainRotation = new DrivetrainRotation(drivetrain, GYRO);
     }
     
     /**
