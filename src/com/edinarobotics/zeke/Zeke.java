@@ -7,14 +7,18 @@
 
 package com.edinarobotics.zeke;
 
-
+import com.edinarobotics.utils.log.Level;
+import com.edinarobotics.utils.log.LogSystem;
+import com.edinarobotics.utils.log.Logger;
+import com.edinarobotics.utils.log.filters.MinimumLevelFilter;
+import com.edinarobotics.utils.log.handlers.PrintHandler;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Zeke extends IterativeRobot {
-
+    Logger zekeLogger;
     Command autonomousCommand;
 
     /**
@@ -22,9 +26,12 @@ public class Zeke extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+        zekeLogger = LogSystem.getLogger("zeke");
+        LogSystem.getRootLogger().setHandler(new PrintHandler(System.out));
+        LogSystem.getRootLogger().setFilter(new MinimumLevelFilter(Level.INFO));
         Components.getInstance(); //Create all robot subsystems.
         Controls.getInstance(); //Create all robot controls.
-        System.out.println("Zeke is alive.");
+        zekeLogger.log(Level.INFO, "Zeke is alive.");
     }
     
     public void disabledInit() {
