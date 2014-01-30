@@ -1,6 +1,10 @@
 
 package com.edinarobotics.zeke;
 
+import com.edinarobotics.utils.gamepad.FilteredGamepad;
+import com.edinarobotics.utils.gamepad.Gamepad;
+import com.edinarobotics.utils.gamepad.gamepadfilters.*;
+import java.util.Vector;
 /**
  * Controls handles creating the {@link Gamepad} objects used to control the
  * robot as well as binding the proper Commands to button actions.
@@ -8,8 +12,14 @@ package com.edinarobotics.zeke;
 public class Controls {
 
     private static Controls instance;
+    public final Gamepad gamepad1;
     
     private Controls() {
+        Vector driveGamepadFilters = new Vector();
+        driveGamepadFilters.addElement(new GamepadDeadzoneFilter(0.1));
+        driveGamepadFilters.addElement(new GamepadPowerFilter(2));
+        GamepadFilterSet driveGamepadFilterSet = new GamepadFilterSet(driveGamepadFilters);
+        gamepad1 = new FilteredGamepad(1, driveGamepadFilterSet);
         
     }
     
