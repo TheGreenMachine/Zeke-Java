@@ -7,11 +7,17 @@
 
 package com.edinarobotics.zeke;
 
+import com.edinarobotics.utils.commands.MaintainStateCommand;
+import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.log.Level;
 import com.edinarobotics.utils.log.LogSystem;
 import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.log.filters.MinimumLevelFilter;
 import com.edinarobotics.utils.log.handlers.PrintHandler;
+import com.edinarobotics.zeke.commands.GamepadDriveRotationCommand;
+import com.edinarobotics.zeke.commands.GamepadDriveStrafeCommand;
+import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
+import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -44,6 +50,10 @@ public class Zeke extends IterativeRobot {
     public void autonomousInit() {
         // schedule the autonomous command (example)
         autonomousCommand.start();
+        DrivetrainRotation drivetrainRotation = Components.getInstance().drivetrainRotation;
+        drivetrainRotation.setDefaultCommand(new MaintainStateCommand(drivetrainRotation));
+        DrivetrainStrafe drivetrainStrafe = Components.getInstance().drivetrainStrafe;
+        drivetrainStrafe.setDefaultCommand(new MaintainStateCommand(drivetrainStrafe));
     }
 
     /**
@@ -54,7 +64,11 @@ public class Zeke extends IterativeRobot {
     }
 
     public void teleopInit() {
-	autonomousCommand.cancel();
+        Gamepad gamepad1 = Controls.getInstance().gamepad1;
+        Components.getInstance().drivetrainRotation
+                .setDefaultCommand(new GamepadDriveRotationCommand(gamepad1));
+        Components.getInstance().drivetrainStrafe
+                .setDefaultCommand(new GamepadDriveStrafeCommand(gamepad1));
     }
 
     /**
