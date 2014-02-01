@@ -4,6 +4,7 @@ import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.subsystems.Shooter;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -29,14 +30,14 @@ public class Components {
     
     // Digital IO Constants
         // Drivetrain Encoders
-        private static final int FRONT_LEFT_A  = 1;
-        private static final int FRONT_LEFT_B  = 2;
-        private static final int FRONT_RIGHT_A = 3;
-        private static final int FRONT_RIGHT_B = 4;
-        private static final int REAR_LEFT_A   = 5;
-        private static final int REAR_LEFT_B   = 6;
-        private static final int REAR_RIGHT_A  = 7;
-        private static final int REAR_RIGHT_B  = 8;
+        private static final DigitalInput FRONT_LEFT_A  = new DigitalInput(1, 1);
+        private static final DigitalInput FRONT_LEFT_B  = new DigitalInput(1, 2);
+        private static final DigitalInput REAR_LEFT_A   = new DigitalInput(1, 3);
+        private static final DigitalInput REAR_LEFT_B   = new DigitalInput(1, 4);
+        private static final DigitalInput FRONT_RIGHT_A = new DigitalInput(1, 5);
+        private static final DigitalInput FRONT_RIGHT_B = new DigitalInput(1, 6);
+        private static final DigitalInput REAR_RIGHT_A  = new DigitalInput(1, 7);
+        private static final DigitalInput REAR_RIGHT_B  = new DigitalInput(1, 8);
     // END Digital IO constants
     
     // PWM constants
