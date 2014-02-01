@@ -38,6 +38,8 @@ public class Components {
         private static final DigitalInput FRONT_RIGHT_B = new DigitalInput(1, 6);
         private static final DigitalInput REAR_RIGHT_A  = new DigitalInput(1, 7);
         private static final DigitalInput REAR_RIGHT_B  = new DigitalInput(1, 8);
+        // Limit Switches
+        private static final DigitalInput SHOOTER_LOWER_LIMIT = new DigitalInput(2, 1);
     // END Digital IO constants
     
     // PWM constants
@@ -61,7 +63,7 @@ public class Components {
         drivetrainStrafe = new DrivetrainStrafe(drivetrain);
         drivetrainRotation = new DrivetrainRotation(drivetrain, GYRO);
         shooter = new Shooter(WINCH_TALON, DOUBLESOLENOID_FORWARD, 
-                DOUBLESOLENOID_REVERSE, SHOOTER_POT_PORT);
+                DOUBLESOLENOID_REVERSE, SHOOTER_POT_PORT, SHOOTER_LOWER_LIMIT);
     }
     
     /**

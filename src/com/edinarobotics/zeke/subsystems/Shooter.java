@@ -6,6 +6,7 @@ import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 import com.sun.squawk.debugger.Log;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -14,6 +15,7 @@ public class Shooter extends Subsystem1816 {
     private Talon winch;
     private DoubleSolenoid solenoidRelease;
     private AnalogPotentiometer shooterPot;
+    private DigitalInput lowerLimitSwitch;
     private Logger log = LogSystem.getLogger("zeke.shooter");
    
     private WinchState winchState;
@@ -24,11 +26,13 @@ public class Shooter extends Subsystem1816 {
     private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kReverse;
 
     public Shooter(int winchPort, int doubleSolenoidForward,
-                int doubleSolenoidReverse, int shooterPort) {
+                int doubleSolenoidReverse, int shooterPort,
+                DigitalInput lowerLimitSwitch) {
         winch = new Talon(winchPort);
         solenoidRelease = new DoubleSolenoid(doubleSolenoidForward
                         , doubleSolenoidReverse);
         shooterPot = new AnalogPotentiometer(shooterPort, SCALE, OFFSET);
+        this.lowerLimitSwitch = lowerLimitSwitch;
         winchState = WinchState.STOPPED;
         
     }
@@ -51,6 +55,11 @@ public class Shooter extends Subsystem1816 {
     }
     
     public void update() {
+        // Safety check
+        if (getShooterLimitSwitch() && winchState.equals(WinchState.LOWERING)) {
+            winchState = WinchState.STOPPED;
+        }
+        
         if(winchState.isMotorOn()) {
             winch.set(1);
         } else {
@@ -61,6 +70,10 @@ public class Shooter extends Subsystem1816 {
         } else {
             solenoidRelease.set(DISENGAGED);
         }
+    }
+    
+    public boolean getShooterLimitSwitch() {
+        return lowerLimitSwitch.get();
     }
     
     public static final class WinchState {
