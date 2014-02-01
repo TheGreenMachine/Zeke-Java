@@ -1,5 +1,6 @@
 package com.edinarobotics.zeke;
 
+import com.edinarobotics.zeke.subsystems.Collector;
 import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
@@ -21,6 +22,7 @@ public class Components {
     public final DrivetrainStrafe drivetrainStrafe;
     public final DrivetrainRotation drivetrainRotation; 
     public final Shooter shooter;
+    public final Collector collector;
     // END Subsystems
     
     // Analog Inputs
@@ -49,8 +51,12 @@ public class Components {
         private static final int FRONT_RIGHT_DRIVE = 3;
         private static final int REAR_RIGHT_DRIVE  = 4;
         private static final int WINCH_TALON = 5;
-        private static final int DOUBLESOLENOID_FORWARD = 6;
-        private static final int DOUBLESOLENOID_REVERSE = 7;
+        private static final int SHOOTER_DOUBLESOLENOID_FORWARD = 6;
+        private static final int SHOOTER_DOUBLESOLENOID_REVERSE = 7;
+        private static final int COLLECTOR_FRONT_TALON = 8;
+        private static final int COLLECTOR_BACK_TALON = 9;
+        private static final int COLLECTOR_DOUBLESOLENOID_FORWARD = 10;
+        private static final int COLLECTOR_DOUBLESOLENOID_REVERSE = 11;
     // END PWM constants
     
     /**
@@ -62,8 +68,10 @@ public class Components {
                 FRONT_RIGHT_DRIVE, REAR_RIGHT_DRIVE);
         drivetrainStrafe = new DrivetrainStrafe(drivetrain);
         drivetrainRotation = new DrivetrainRotation(drivetrain, GYRO);
-        shooter = new Shooter(WINCH_TALON, DOUBLESOLENOID_FORWARD, 
-                DOUBLESOLENOID_REVERSE, SHOOTER_POT_PORT, SHOOTER_LOWER_LIMIT);
+        shooter = new Shooter(WINCH_TALON, SHOOTER_DOUBLESOLENOID_FORWARD, 
+                SHOOTER_DOUBLESOLENOID_REVERSE, SHOOTER_POT_PORT, SHOOTER_LOWER_LIMIT);
+        collector = new Collector(COLLECTOR_FRONT_TALON, COLLECTOR_BACK_TALON, 
+                    COLLECTOR_DOUBLESOLENOID_FORWARD, COLLECTOR_DOUBLESOLENOID_REVERSE);
     }
     
     /**
