@@ -1,6 +1,10 @@
 package com.edinarobotics.zeke.subsystems;
 
+import com.edinarobotics.utils.log.Level;
+import com.edinarobotics.utils.log.LogSystem;
+import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
+import com.sun.squawk.debugger.Log;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
@@ -8,13 +12,16 @@ import edu.wpi.first.wpilibj.Talon;
 public class Shooter extends Subsystem1816 {
     
     private Talon winch;
+    private DoubleSolenoid solenoidRelease;
+    private AnalogPotentiometer shooterPot;
+    private Logger log = LogSystem.getLogger("zeke.shooter");
+   
     private WinchState winchState;
     
-    private DoubleSolenoid solenoidRelease;
-    private static DoubleSolenoid.Value value;
-    private AnalogPotentiometer shooterPot;
-    private final double SCALE = 1;
-    private final double OFFSET = 0;
+    private static final double SCALE = 1;
+    private static final double OFFSET = 0;
+    private static final DoubleSolenoid.Value ENGAGED = DoubleSolenoid.Value.kForward;
+    private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kReverse;
 
     public Shooter(int winchPort, int doubleSolenoidForward,
                 int doubleSolenoidReverse, int shooterPort) {
@@ -22,15 +29,38 @@ public class Shooter extends Subsystem1816 {
         solenoidRelease = new DoubleSolenoid(doubleSolenoidForward
                         , doubleSolenoidReverse);
         shooterPot = new AnalogPotentiometer(shooterPort, SCALE, OFFSET);
+        winchState = WinchState.STOPPED;
+        
     }
     
-    public void setSolenoid(DoubleSolenoid.Value value) {
-        this.value = value;
+    public void setWinchState(WinchState winchState) {
+        if(winchState != null) {
+            this.winchState = winchState;
+        } else {
+            log.log(Level.SEVERE, "Shooter.setWinchState got null.");
+        }
         update();
     }
     
+    public double getStringPot() {
+        return shooterPot.get();
+    }
+    
+    public WinchState getWinchState() {
+        return winchState;
+    }
+    
     public void update() {
-        solenoidRelease.set(value);
+        if(winchState.isMotorOn()) {
+            winch.set(1);
+        } else {
+            winch.set(0);
+        }
+        if(winchState.isPistonEngaged()) {
+            solenoidRelease.set(ENGAGED);
+        } else {
+            solenoidRelease.set(DISENGAGED);
+        }
     }
     
     public static final class WinchState {
@@ -55,11 +85,11 @@ public class Shooter extends Subsystem1816 {
             return winchState;
         }
 
-        private boolean isIsPistonEngaged() {
+        private boolean isPistonEngaged() {
             return isPistonEngaged;
         }
 
-        private boolean isIsMotorOn() {
+        private boolean isMotorOn() {
             return isMotorOn;
         }
         
