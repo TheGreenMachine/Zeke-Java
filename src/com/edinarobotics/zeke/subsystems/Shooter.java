@@ -4,6 +4,7 @@ import com.edinarobotics.utils.log.Level;
 import com.edinarobotics.utils.log.LogSystem;
 import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
+import com.edinarobotics.zeke.Components;
 import com.sun.squawk.debugger.Log;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -65,7 +66,7 @@ public class Shooter extends Subsystem1816 {
         } else {
             winch.set(0);
         }
-        if(winchState.isPistonEngaged()) {
+        if(winchState.isPistonEngaged() && !Components.getInstance().collector.getDeployed()) {
             solenoidRelease.set(ENGAGED);
         } else {
             solenoidRelease.set(DISENGAGED);
