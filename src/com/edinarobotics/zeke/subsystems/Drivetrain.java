@@ -1,8 +1,9 @@
 package com.edinarobotics.zeke.subsystems;
 
+import com.edinarobotics.utils.common.Updatable;
 import edu.wpi.first.wpilibj.RobotDrive;
 
-public class Drivetrain {
+public class Drivetrain implements Updatable {
     private RobotDrive robotDrive;
     private double magnitude, direction, rotation;
     
@@ -23,10 +24,6 @@ public class Drivetrain {
         update();
     }
     
-    public void update() {
-        robotDrive.mecanumDrive_Polar(magnitude, direction, rotation);
-    }
-    
     public double getMagnitude() {
         return magnitude;
     }
@@ -35,4 +32,7 @@ public class Drivetrain {
         return direction;
     }
     
+    public void update() {
+        robotDrive.mecanumDrive_Polar(magnitude, direction, rotation);
+    }
 }
