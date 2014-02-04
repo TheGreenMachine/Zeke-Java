@@ -1,4 +1,3 @@
-
 package com.edinarobotics.zeke.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -11,7 +10,7 @@ public class GamepadDriveRotationCommand extends Command {
     private DrivetrainRotation drivetrainRotation;
     
     public GamepadDriveRotationCommand(Gamepad gamepad) {
-        super ("GamepadDriveRotation");
+        super("GamepadDriveRotation");
         this.gamepad = gamepad;
         this.drivetrainRotation = Components.getInstance().drivetrainRotation;
         requires(drivetrainRotation);
