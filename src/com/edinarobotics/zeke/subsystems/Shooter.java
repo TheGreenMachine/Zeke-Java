@@ -57,7 +57,7 @@ public class Shooter extends Subsystem1816 {
     
     public void update() {
         // Safety check
-        if (getShooterLimitSwitch() && winchState.equals(WinchState.LOWERING)) {
+        if(getShooterLimitSwitch() && winchState.equals(WinchState.LOWERING)) {
             winchState = WinchState.STOPPED;
         }
         
@@ -66,6 +66,7 @@ public class Shooter extends Subsystem1816 {
         } else {
             winch.set(0);
         }
+        
         if(winchState.isPistonEngaged() && !Components.getInstance().collector.getDeployed()) {
             solenoidRelease.set(ENGAGED);
         } else {
@@ -108,7 +109,7 @@ public class Shooter extends Subsystem1816 {
         }
         
         public boolean equals(Object winchState) {
-            if (winchState instanceof WinchState) {
+            if(winchState instanceof WinchState) {
                 return ((WinchState)winchState).getWinchState() == this.getWinchState();
             }
             return false;
