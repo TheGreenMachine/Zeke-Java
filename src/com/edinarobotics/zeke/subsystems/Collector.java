@@ -31,7 +31,7 @@ public class Collector extends Subsystem1816 {
     }
 
     public void update() {
-        if (isDeployed) {
+        if(isDeployed) {
             collectorRotator.set(DEPLOYED);
             collectorWheelFront.set(collectorWheelState.getFrontWheelSpeed());
             collectorWheelBack.set(collectorWheelState.getBackWheelSpeed());
@@ -52,7 +52,7 @@ public class Collector extends Subsystem1816 {
     }
     
     public void setCollectorWheelState(CollectorWheelState collectorWheelState) {
-        if (collectorWheelState != null) {
+        if(collectorWheelState != null) {
             this.collectorWheelState = collectorWheelState;
         } else {
             log.log(Level.SEVERE, "Collector.setCollectorWheelState got null");
@@ -105,7 +105,7 @@ public class Collector extends Subsystem1816 {
         }
         
         public boolean equals(Object collectorWheelState) {
-            if (collectorWheelState instanceof CollectorWheelState) {
+            if(collectorWheelState instanceof CollectorWheelState) {
                 return ((CollectorWheelState)collectorWheelState).getCollectorState() == this.getCollectorState();
             }
             return false;
