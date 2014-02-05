@@ -34,7 +34,7 @@ public class LowerShooterToHeightCommand extends Command {
     }
 
     protected void end() {
-        
+        shooter.setWinchState(Shooter.WinchState.STOPPED);
     }
 
     protected void interrupted() {
