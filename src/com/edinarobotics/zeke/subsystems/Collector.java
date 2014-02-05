@@ -24,7 +24,7 @@ public class Collector extends Subsystem1816 {
                 int doubleSolenoidForward, int doubleSolenoidReverse) {
         collectorWheelFront = new Talon(collectorWheelFrontPort);
         collectorWheelBack = new Talon(collectorWheelBackPort);
-        collectorRotator = new DoubleSolenoid(doubleSolenoidReverse, doubleSolenoidReverse);
+        collectorRotator = new DoubleSolenoid(doubleSolenoidForward, doubleSolenoidReverse);
         
         isDeployed = false;
         collectorWheelState = CollectorWheelState.STOPPED;
