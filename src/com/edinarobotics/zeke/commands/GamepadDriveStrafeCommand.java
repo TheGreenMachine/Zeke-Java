@@ -20,7 +20,6 @@ public class GamepadDriveStrafeCommand extends Command {
     }
 
     protected void initialize() {
-        drivetrainStrafe.setMecanumPolarStrafe(0, 0);
     }
 
     protected void execute() {
@@ -34,7 +33,6 @@ public class GamepadDriveStrafeCommand extends Command {
     }
 
     protected void end() {
-        drivetrainStrafe.setMecanumPolarStrafe(0, 0);
     }
 
     protected void interrupted() {

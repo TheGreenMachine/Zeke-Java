@@ -16,12 +16,7 @@ public class GamepadDriveRotationCommand extends Command {
         requires(drivetrainRotation);
     }
 
-    protected void interrupted() {
-        end();
-    }
-
     protected void initialize() {
-        drivetrainRotation.setMecanumPolarRotate(0);
     }
 
     protected void execute() {
@@ -34,8 +29,10 @@ public class GamepadDriveRotationCommand extends Command {
     }
 
     protected void end() {
-        drivetrainRotation.setMecanumPolarRotate(0);
     }
     
-    
+    protected void interrupted() {
+        end();
+    }
+
 }
