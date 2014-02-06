@@ -40,16 +40,17 @@ public class Components {
         private static final DigitalInput FRONT_RIGHT_B = new DigitalInput(1, 6);
         private static final DigitalInput REAR_RIGHT_A  = new DigitalInput(1, 7);
         private static final DigitalInput REAR_RIGHT_B  = new DigitalInput(1, 8);
+        
         // Limit Switches
         private static final DigitalInput SHOOTER_LOWER_LIMIT = new DigitalInput(2, 1);
     // END Digital IO constants
     
     // PWM constants
         // Drivetrain
-        private static final int FRONT_LEFT_DRIVE  = 1;
+        private static final int FRONT_LEFT_DRIVE  = 3;
         private static final int REAR_LEFT_DRIVE   = 2;
-        private static final int FRONT_RIGHT_DRIVE = 3;
-        private static final int REAR_RIGHT_DRIVE  = 4;
+        private static final int FRONT_RIGHT_DRIVE = 4;
+        private static final int REAR_RIGHT_DRIVE  = 1;
         private static final int WINCH_TALON = 5;
         private static final int SHOOTER_DOUBLESOLENOID_FORWARD = 6;
         private static final int SHOOTER_DOUBLESOLENOID_REVERSE = 7;
