@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Zeke extends IterativeRobot {
-    Logger zekeLogger;
+    private Logger zekeLogger;
     Command autonomousCommand;
 
     /**
@@ -35,8 +35,8 @@ public class Zeke extends IterativeRobot {
         zekeLogger = LogSystem.getLogger("zeke");
         LogSystem.getRootLogger().setHandler(new PrintHandler(System.out));
         LogSystem.getRootLogger().setFilter(new MinimumLevelFilter(Level.INFO));
-        Components.getInstance(); //Create all robot subsystems.
         Controls.getInstance(); //Create all robot controls.
+        Components.getInstance(); //Create all robot subsystems.
         zekeLogger.log(Level.INFO, "Zeke is alive.");
     }
     
@@ -79,7 +79,8 @@ public class Zeke extends IterativeRobot {
     }
     
     public void stop() {
-        
+        Components.getInstance().drivetrainRotation.setMecanumPolarRotate(0);
+        Components.getInstance().drivetrainStrafe.setMecanumPolarStrafe(0, 0);
     }
     
     /**
