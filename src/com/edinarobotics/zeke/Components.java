@@ -5,6 +5,7 @@ import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.subsystems.Shooter;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
@@ -25,9 +26,12 @@ public class Components {
     public final Collector collector;
     // END Subsystems
     
+    // Compressor
+    public final Compressor compressor;
+    
     // Analog Inputs
     private static final int GYRO = 1;
-    private static final int SHOOTER_POT_PORT = 2;
+    private static final int SHOOTER_POT_PORT = 3;
     // END Analog Inputs
     
     // Digital IO Constants
@@ -36,13 +40,16 @@ public class Components {
         private static final DigitalInput FRONT_LEFT_B  = new DigitalInput(1, 2);
         private static final DigitalInput REAR_LEFT_A   = new DigitalInput(1, 3);
         private static final DigitalInput REAR_LEFT_B   = new DigitalInput(1, 4);
-        private static final DigitalInput FRONT_RIGHT_A = new DigitalInput(1, 5);
+        private static final DigitalInput FRONT_RIGHT_A = new DigitalInput(1, 9);
         private static final DigitalInput FRONT_RIGHT_B = new DigitalInput(1, 6);
         private static final DigitalInput REAR_RIGHT_A  = new DigitalInput(1, 7);
         private static final DigitalInput REAR_RIGHT_B  = new DigitalInput(1, 8);
         
         // Limit Switches
         private static final DigitalInput SHOOTER_LOWER_LIMIT = new DigitalInput(2, 1);
+        
+        // Compressor Switch
+        private static final int COMPRESSOR_PRESSURE_SWITCH = 5;
     // END Digital IO constants
     
     // PWM constants
@@ -52,14 +59,26 @@ public class Components {
         private static final int FRONT_RIGHT_DRIVE = 2;
         private static final int REAR_RIGHT_DRIVE  = 1;
         private static final int WINCH_TALON = 5;
-        private static final int SHOOTER_DOUBLESOLENOID_FORWARD = 6;
-        private static final int SHOOTER_DOUBLESOLENOID_REVERSE = 7;
         private static final int COLLECTOR_FRONT_TALON = 8;
         private static final int COLLECTOR_BACK_TALON = 9;
-        private static final int COLLECTOR_DOUBLESOLENOID_FORWARD = 10;
-        private static final int COLLECTOR_DOUBLESOLENOID_REVERSE = 11;
     // END PWM constants
-    
+        
+    // Solenoid constants
+        // Collector
+        private static final int COLLECTOR_DOUBLESOLENOID_FORWARD = 1;
+        private static final int COLLECTOR_DOUBLESOLENOID_REVERSE = 2;
+        // Shooter
+        private static final int SHOOTER_DOUBLESOLENOID_FORWARD = 3;
+        private static final int SHOOTER_DOUBLESOLENOID_REVERSE = 4;
+        // Pusher
+        private static final int PUSHER_DOUBLESOLENOID_FORWARD = 6;
+        private static final int PUSHER_DOUBLESOLENOID_REVERSE = 5;
+    // END Solenoid constants
+        
+    // Relay constats
+        // Compressor
+        private static final int COMPRESSOR_RELAY = 1;
+    // END Relay constants
     /**
      * Private constructor for the Components singleton. This constructor
      * is only called once and handles creating all the robot subsystems.
@@ -73,6 +92,8 @@ public class Components {
                 SHOOTER_DOUBLESOLENOID_REVERSE, SHOOTER_POT_PORT, SHOOTER_LOWER_LIMIT);
         collector = new Collector(COLLECTOR_FRONT_TALON, COLLECTOR_BACK_TALON, 
                     COLLECTOR_DOUBLESOLENOID_FORWARD, COLLECTOR_DOUBLESOLENOID_REVERSE);
+        compressor = new Compressor(COMPRESSOR_PRESSURE_SWITCH, COMPRESSOR_RELAY);
+        compressor.start();
     }
     
     /**
