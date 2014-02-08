@@ -47,9 +47,9 @@ public class Components {
     
     // PWM constants
         // Drivetrain
-        private static final int FRONT_LEFT_DRIVE  = 3;
-        private static final int REAR_LEFT_DRIVE   = 2;
-        private static final int FRONT_RIGHT_DRIVE = 4;
+        private static final int FRONT_LEFT_DRIVE  = 4;
+        private static final int REAR_LEFT_DRIVE   = 3;
+        private static final int FRONT_RIGHT_DRIVE = 2;
         private static final int REAR_RIGHT_DRIVE  = 1;
         private static final int WINCH_TALON = 5;
         private static final int SHOOTER_DOUBLESOLENOID_FORWARD = 6;
