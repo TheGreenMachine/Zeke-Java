@@ -4,6 +4,8 @@ package com.edinarobotics.zeke;
 import com.edinarobotics.utils.gamepad.FilteredGamepad;
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.*;
+import com.edinarobotics.zeke.commands.SetShooterCommand;
+import com.edinarobotics.zeke.subsystems.Shooter;
 import java.util.Vector;
 /**
  * Controls handles creating the {@link Gamepad} objects used to control the
@@ -27,6 +29,10 @@ public class Controls {
         shootGamepadFilters.addElement(new GamepadPowerFilter(2));
         GamepadFilterSet shootGamepadFilterSet = new GamepadFilterSet(shootGamepadFilters);
         gamepad2 = new FilteredGamepad(2, shootGamepadFilterSet);
+        
+        gamepad2.rightBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.LOWERING));
+        gamepad2.rightBumper().whenReleased(new SetShooterCommand(Shooter.WinchState.STOPPED));
+        gamepad2.leftBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.FREE));
     }
     
     /**
