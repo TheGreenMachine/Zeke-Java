@@ -13,6 +13,7 @@ public class Controls {
 
     private static Controls instance;
     public final Gamepad gamepad1;
+    public final Gamepad gamepad2;
     
     private Controls() {
         Vector driveGamepadFilters = new Vector();
@@ -21,6 +22,11 @@ public class Controls {
         GamepadFilterSet driveGamepadFilterSet = new GamepadFilterSet(driveGamepadFilters);
         gamepad1 = new FilteredGamepad(1, driveGamepadFilterSet);
         
+        Vector shootGamepadFilters = new Vector();
+        shootGamepadFilters.addElement(new GamepadDeadzoneFilter(0.1));
+        shootGamepadFilters.addElement(new GamepadPowerFilter(2));
+        GamepadFilterSet shootGamepadFilterSet = new GamepadFilterSet(shootGamepadFilters);
+        gamepad2 = new FilteredGamepad(2, shootGamepadFilterSet);
     }
     
     /**
