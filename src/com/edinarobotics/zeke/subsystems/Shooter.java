@@ -5,7 +5,6 @@ import com.edinarobotics.utils.log.LogSystem;
 import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 import com.edinarobotics.zeke.Components;
-import com.sun.squawk.debugger.Log;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -61,11 +60,7 @@ public class Shooter extends Subsystem1816 {
             winchState = WinchState.STOPPED;
         }
         
-        if(winchState.isMotorOn()) {
-            winch.set(1);
-        } else {
-            winch.set(0);
-        }
+        winch.set(winchState.getMotorSpeed());
         
         if(winchState.isPistonEngaged() && !Components.getInstance().collector.getDeployed()) {
             solenoidRelease.set(ENGAGED);
@@ -79,20 +74,20 @@ public class Shooter extends Subsystem1816 {
     }
     
     public static final class WinchState {
-        public static final WinchState LOWERING = new WinchState((byte)-1, false, true, "lowering");
-        public static final WinchState STOPPED = new WinchState((byte)0, false, false, "stopped");
-        public static final WinchState FREE = new WinchState((byte)1, true, false, "free");
+        public static final WinchState LOWERING = new WinchState((byte)-1, false, 1.0, "lowering");
+        public static final WinchState STOPPED = new WinchState((byte)0, false, 0.0, "stopped");
+        public static final WinchState FREE = new WinchState((byte)1, true, 0.0, "free");
         
         private byte winchState;
         private boolean isPistonEngaged;
-        private boolean isMotorOn;
+        private double motorSpeed;
         private String stateName;
         
         private WinchState(byte winchState, boolean isPistonEngaged,
-                boolean isMotorOn, String stateName) {
+                double motorSpeed, String stateName) {
             this.winchState = winchState;
             this.isPistonEngaged = isPistonEngaged;
-            this.isMotorOn = isMotorOn;
+            this.motorSpeed = motorSpeed;
             this.stateName = stateName;
         }
         
@@ -104,8 +99,8 @@ public class Shooter extends Subsystem1816 {
             return isPistonEngaged;
         }
 
-        private boolean isMotorOn() {
-            return isMotorOn;
+        private double getMotorSpeed() {
+            return motorSpeed;
         }
         
         public boolean equals(Object winchState) {
