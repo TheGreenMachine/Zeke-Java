@@ -20,8 +20,8 @@ public class GamepadDriveRotationCommand extends Command {
     }
 
     protected void execute() {
-        double magnitude = gamepad.getGamepadAxisState().getRightJoystick().getX();
-        drivetrainRotation.setMecanumPolarRotate(magnitude);
+        double rotation = gamepad.getGamepadAxisState().getRightJoystick().getX();
+        drivetrainRotation.setMecanumPolarRotate(rotation);
     }
 
     protected boolean isFinished() {
