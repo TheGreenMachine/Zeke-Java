@@ -20,19 +20,21 @@ public class Shooter extends Subsystem1816 {
    
     private WinchState winchState;
     
-    private static final double SCALE = 1;
-    private static final double OFFSET = 0;
+    private static final double SCALE = 6.317;
+    private static final double OFFSET = -1.579;
+    private static final double MIN_HEIGHT = 0.0;
+    private static final double SLOW_MOVEMENT_HEIGHT = 1.0;
+    
     private static final DoubleSolenoid.Value ENGAGED = DoubleSolenoid.Value.kForward;
     private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kReverse;
 
     public Shooter(int winchPort, int doubleSolenoidForward,
-                int doubleSolenoidReverse, int shooterPort,
-                DigitalInput lowerLimitSwitch) {
+                int doubleSolenoidReverse, int shooterPort, DigitalInput limitSwitch) {
         winch = new Talon(winchPort);
         solenoidRelease = new DoubleSolenoid(doubleSolenoidForward
                         , doubleSolenoidReverse);
         shooterPot = new AnalogPotentiometer(shooterPort, SCALE, OFFSET);
-        this.lowerLimitSwitch = lowerLimitSwitch;
+        lowerLimitSwitch = limitSwitch;
         winchState = WinchState.STOPPED;
         
     }
@@ -55,19 +57,25 @@ public class Shooter extends Subsystem1816 {
     }
     
     public void update() {
-        winch.set(winchState.getMotorSpeed());
+        if(getStringPot() > MIN_HEIGHT && getShooterLimitSwitch()) {
+            if(getStringPot() > SLOW_MOVEMENT_HEIGHT) {
+                winch.set(winchState.getMotorSpeed());
+            }
+        } else {
+            setWinchState(WinchState.STOPPED);
+            winch.set(winchState.getMotorSpeed());
+        }
         
-        if(winchState.isPistonEngaged() && !Components.getInstance().collector.getDeployed()) {
+        if(Components.getInstance().collector.isCollectorRetracted()
+            && winchState.isPistonEngaged()) {
             solenoidRelease.set(ENGAGED);
         } else {
             solenoidRelease.set(DISENGAGED);
         }
-        
-        
     }
     
     public boolean getShooterLimitSwitch() {
-        return lowerLimitSwitch.get();
+        return true;
     }
     
     public static final class WinchState {

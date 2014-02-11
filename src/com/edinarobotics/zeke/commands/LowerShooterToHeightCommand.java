@@ -22,12 +22,10 @@ public class LowerShooterToHeightCommand extends Command {
     }
 
     protected void execute() {
-        this.currentHeight = shooter.getStringPot();
-        if (targetHeight < currentHeight) {
-            end();
-        } else {
+	this.currentHeight = shooter.getStringPot();
+        if (currentHeight > targetHeight && shooter.getShooterLimitSwitch()) {
             shooter.setWinchState(Shooter.WinchState.LOWERING);
-        }
+	}
     }
 
     protected boolean isFinished() {
@@ -39,7 +37,7 @@ public class LowerShooterToHeightCommand extends Command {
     }
 
     protected void interrupted() {
-        shooter.setWinchState(Shooter.WinchState.STOPPED);
+        end();
     }
     
 }
