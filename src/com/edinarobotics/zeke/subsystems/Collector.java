@@ -66,13 +66,13 @@ public class Collector extends Subsystem1816 {
     
     public static final class CollectorWheelState {
         public static final CollectorWheelState COLLECTING = new 
-                CollectorWheelState((byte)0, 1.0, 1.0, "collecting");
+                CollectorWheelState((byte)0, -0.5, 0.5, "collecting");
         public static final CollectorWheelState HOLDING = new 
-                CollectorWheelState((byte)1, 1.0, 0.0, "holding");
+                CollectorWheelState((byte)1, -0.5, 0.0, "holding");
         public static final CollectorWheelState STOPPED = new 
                 CollectorWheelState((byte)2, 0.0, 0.0, "stopped");
         public static final CollectorWheelState REVERSING = new 
-                CollectorWheelState((byte)3, -1.0, -1.0, "reversing");
+                CollectorWheelState((byte)3, 0.5, -0.5, "reversing");
         
                
         private String stateName;

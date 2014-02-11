@@ -60,8 +60,8 @@ public class Components {
         private static final int FRONT_RIGHT_DRIVE = 2;
         private static final int REAR_RIGHT_DRIVE  = 1;
         private static final int WINCH_TALON = 5;
-        private static final int COLLECTOR_FRONT_TALON = 8;
-        private static final int COLLECTOR_BACK_TALON = 9;
+        private static final int COLLECTOR_FRONT_TALON = 6;
+        private static final int COLLECTOR_BACK_TALON = 7;
     // END PWM constants
         
     // Solenoid constants
