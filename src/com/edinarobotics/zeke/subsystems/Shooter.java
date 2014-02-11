@@ -28,12 +28,11 @@ public class Shooter extends Subsystem1816 {
     private static final DoubleSolenoid.Value ENGAGED = DoubleSolenoid.Value.kForward;
     private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kReverse;
 
-    public Shooter(int winchPort, int doubleSolenoidForward,
-                int doubleSolenoidReverse, int shooterPort, DigitalInput limitSwitch) {
+    public Shooter(int winchPort, int doubleSolenoidForward, int doubleSolenoidReverse,
+            int shooterPotPort, DigitalInput limitSwitch) {
         winch = new Talon(winchPort);
-        solenoidRelease = new DoubleSolenoid(doubleSolenoidForward
-                        , doubleSolenoidReverse);
-        shooterPot = new AnalogPotentiometer(shooterPort, SCALE, OFFSET);
+        solenoidRelease = new DoubleSolenoid(doubleSolenoidForward, doubleSolenoidReverse);
+        shooterPot = new AnalogPotentiometer(shooterPotPort, SCALE, OFFSET);
         lowerLimitSwitch = limitSwitch;
         winchState = WinchState.STOPPED;
         
