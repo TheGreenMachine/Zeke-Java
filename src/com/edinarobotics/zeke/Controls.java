@@ -4,7 +4,9 @@ package com.edinarobotics.zeke;
 import com.edinarobotics.utils.gamepad.FilteredGamepad;
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.*;
+import com.edinarobotics.zeke.commands.SetCollectorCommand;
 import com.edinarobotics.zeke.commands.SetShooterCommand;
+import com.edinarobotics.zeke.subsystems.Collector;
 import com.edinarobotics.zeke.subsystems.Shooter;
 import java.util.Vector;
 /**
@@ -30,9 +32,18 @@ public class Controls {
         GamepadFilterSet shootGamepadFilterSet = new GamepadFilterSet(shootGamepadFilters);
         gamepad2 = new FilteredGamepad(2, shootGamepadFilterSet);
         
-        gamepad2.rightBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.LOWERING));
-        gamepad2.rightBumper().whenReleased(new SetShooterCommand(Shooter.WinchState.STOPPED));
-        gamepad2.leftBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.FREE));
+        // Shooter controls
+        //gamepad2.rightBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.LOWERING));
+        //gamepad2.rightBumper().whenReleased(new SetShooterCommand(Shooter.WinchState.STOPPED));
+        //gamepad2.leftBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.FREE));
+        
+        // Collector controls
+        gamepad2.diamondLeft().whenPressed(new SetCollectorCommand(true, Collector.CollectorWheelState.COLLECTING));
+        gamepad2.diamondLeft().whenReleased(new SetCollectorCommand(true, Collector.CollectorWheelState.STOPPED));
+        gamepad2.diamondDown().whenPressed(new SetCollectorCommand(true, Collector.CollectorWheelState.REVERSING));
+        gamepad2.diamondDown().whenReleased(new SetCollectorCommand(true, Collector.CollectorWheelState.STOPPED));
+        gamepad2.diamondRight().whenPressed(new SetCollectorCommand(true, Collector.CollectorWheelState.HOLDING));
+        gamepad2.diamondRight().whenReleased(new SetCollectorCommand(true, Collector.CollectorWheelState.STOPPED));
     }
     
     /**
