@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class SetShooterCommand extends Command {
 
     private Shooter shooter;
-    private DoubleSolenoid.Value value;
     private WinchState winchState;
     
     public SetShooterCommand(WinchState winchState) {
