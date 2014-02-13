@@ -27,7 +27,7 @@ public class Shooter extends Subsystem1816 {
     
     private static final DoubleSolenoid.Value ENGAGED = DoubleSolenoid.Value.kForward;
     private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kReverse;
-
+    
     public Shooter(int winchPort, int doubleSolenoidForward,
                 int doubleSolenoidReverse, int shooterPort, DigitalInput limitSwitch) {
         winch = new Talon(winchPort);
@@ -36,7 +36,6 @@ public class Shooter extends Subsystem1816 {
         shooterPot = new AnalogPotentiometer(shooterPort, SCALE, OFFSET);
         lowerLimitSwitch = limitSwitch;
         winchState = WinchState.STOPPED;
-        
     }
     
     public void setWinchState(WinchState winchState) {
@@ -57,29 +56,22 @@ public class Shooter extends Subsystem1816 {
     }
     
     public void update() {
-        if(getStringPot() > MIN_HEIGHT && getShooterLimitSwitch()) {
-            if(getStringPot() > SLOW_MOVEMENT_HEIGHT) {
-                winch.set(winchState.getMotorSpeed());
-            }
-        } else {
-            setWinchState(WinchState.STOPPED);
-            winch.set(winchState.getMotorSpeed());
+        if(getStringPot() < MIN_HEIGHT && getShooterLimitSwitch()
+                && (winchState.equals(WinchState.LOWERING) || winchState.equals(WinchState.LOWERING_SLOW))) {
+            winchState = WinchState.STOPPED;
         }
         
-        if(Components.getInstance().collector.isCollectorRetracted()
-            && winchState.isPistonEngaged()) {
-            solenoidRelease.set(ENGAGED);
-        } else {
-            solenoidRelease.set(DISENGAGED);
-        }
+        winch.set(winchState.getMotorSpeed());
+        solenoidRelease.set(winchState.isPistonEngaged() ? ENGAGED : DISENGAGED);
     }
     
     public boolean getShooterLimitSwitch() {
-        return true;
+        return lowerLimitSwitch.get();
     }
     
     public static final class WinchState {
         public static final WinchState LOWERING = new WinchState((byte)-1, false, 1.0, "lowering");
+        public static final WinchState LOWERING_SLOW = new WinchState((byte)-1, false, 0.5, "lowering slow");
         public static final WinchState STOPPED = new WinchState((byte)0, false, 0.0, "stopped");
         public static final WinchState FREE = new WinchState((byte)1, true, 0.0, "free");
         
