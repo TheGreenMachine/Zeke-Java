@@ -41,6 +41,8 @@ public class Zeke extends IterativeRobot {
     }
     
     public void disabledInit() {
+        stop();
+        zekeLogger.log(Level.INFO, "Disabled the robot.");
     }
     
     public void disabledPeriodic() {
@@ -54,6 +56,7 @@ public class Zeke extends IterativeRobot {
         drivetrainRotation.setDefaultCommand(new MaintainStateCommand(drivetrainRotation));
         DrivetrainStrafe drivetrainStrafe = Components.getInstance().drivetrainStrafe;
         drivetrainStrafe.setDefaultCommand(new MaintainStateCommand(drivetrainStrafe));
+        zekeLogger.log(Level.INFO, "Initialized autonomous.");
     }
 
     /**
@@ -69,6 +72,7 @@ public class Zeke extends IterativeRobot {
                 .setDefaultCommand(new GamepadDriveRotationCommand(gamepad1));
         Components.getInstance().drivetrainStrafe
                 .setDefaultCommand(new GamepadDriveStrafeCommand(gamepad1));
+        zekeLogger.log(Level.INFO, "Initialized teleop.");
     }
 
     /**

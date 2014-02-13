@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 
 public class Collector extends Subsystem1816 {
-    private DoubleSolenoid collectorRotator;
+    private DoubleSolenoid collectorPiston;
     private Talon collectorWheelFront;
     private Talon collectorWheelBack;
     
@@ -24,7 +24,7 @@ public class Collector extends Subsystem1816 {
                 int doubleSolenoidForward, int doubleSolenoidReverse) {
         collectorWheelFront = new Talon(collectorWheelFrontPort);
         collectorWheelBack = new Talon(collectorWheelBackPort);
-        collectorRotator = new DoubleSolenoid(doubleSolenoidForward, doubleSolenoidReverse);
+        collectorPiston = new DoubleSolenoid(doubleSolenoidForward, doubleSolenoidReverse);
         
         isDeployed = false;
         collectorWheelState = CollectorWheelState.STOPPED;
@@ -32,11 +32,11 @@ public class Collector extends Subsystem1816 {
 
     public void update() {
         if(isDeployed) {
-            collectorRotator.set(DEPLOYED);
+            collectorPiston.set(RETRACTED);
             collectorWheelFront.set(collectorWheelState.getFrontWheelSpeed());
             collectorWheelBack.set(collectorWheelState.getBackWheelSpeed());
         } else {
-            collectorRotator.set(RETRACTED);
+            collectorPiston.set(DEPLOYED);
             collectorWheelFront.set(0.0);
             collectorWheelBack.set(0.0);
         }
@@ -66,13 +66,13 @@ public class Collector extends Subsystem1816 {
     
     public static final class CollectorWheelState {
         public static final CollectorWheelState COLLECTING = new 
-                CollectorWheelState((byte)0, -0.5, 0.5, "collecting");
+                CollectorWheelState((byte)0, -0.75, 0.75, "collecting");
         public static final CollectorWheelState HOLDING = new 
-                CollectorWheelState((byte)1, -0.5, 0.0, "holding");
+                CollectorWheelState((byte)1, -0.75, 0.0, "holding");
         public static final CollectorWheelState STOPPED = new 
                 CollectorWheelState((byte)2, 0.0, 0.0, "stopped");
         public static final CollectorWheelState REVERSING = new 
-                CollectorWheelState((byte)3, 0.5, -0.5, "reversing");
+                CollectorWheelState((byte)3, 0.75, -0.75, "reversing");
         
                
         private String stateName;

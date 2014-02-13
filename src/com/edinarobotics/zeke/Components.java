@@ -66,8 +66,8 @@ public class Components {
         
     // Solenoid constants
         // Collector
-        private static final int COLLECTOR_DOUBLESOLENOID_FORWARD = 1;
-        private static final int COLLECTOR_DOUBLESOLENOID_REVERSE = 2;
+        private static final int COLLECTOR_DOUBLESOLENOID_FORWARD = 2;
+        private static final int COLLECTOR_DOUBLESOLENOID_REVERSE = 1;
         // Shooter
         private static final int SHOOTER_DOUBLESOLENOID_FORWARD = 3;
         private static final int SHOOTER_DOUBLESOLENOID_REVERSE = 4;

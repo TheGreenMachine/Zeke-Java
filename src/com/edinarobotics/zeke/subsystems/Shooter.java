@@ -35,7 +35,6 @@ public class Shooter extends Subsystem1816 {
         shooterPot = new AnalogPotentiometer(shooterPotPort, SCALE, OFFSET);
         lowerLimitSwitch = new DigitalInput(1, 6);
         winchState = WinchState.STOPPED;
-        
     }
     
     public void setWinchState(WinchState winchState) {
@@ -56,20 +55,12 @@ public class Shooter extends Subsystem1816 {
     }
     
     public void update() {
-        if(getStringPot() > MIN_HEIGHT && getShooterLimitSwitch()) {
-            if(getStringPot() > SLOW_MOVEMENT_HEIGHT) {
-                winch.set(winchState.getMotorSpeed());
-            }
-        } else {
-            setWinchState(WinchState.STOPPED);
-            winch.set(winchState.getMotorSpeed());
+        if(getStringPot() < MIN_HEIGHT && getShooterLimitSwitch()
+                && (winchState.equals(WinchState.LOWERING) || winchState.equals(WinchState.LOWERING_SLOW))) {
+            winchState = WinchState.STOPPED;
         }
-        
-        if(Components.getInstance().collector.getDeployed() && winchState.isPistonEngaged()) {
-            solenoidRelease.set(ENGAGED);
-        } else {
-            solenoidRelease.set(DISENGAGED);
-        }
+        winch.set(winchState.getMotorSpeed());
+        solenoidRelease.set(winchState.isPistonEngaged() ? ENGAGED : DISENGAGED);
     }
     
     public boolean getShooterLimitSwitch() {
@@ -78,6 +69,7 @@ public class Shooter extends Subsystem1816 {
     
     public static final class WinchState {
         public static final WinchState LOWERING = new WinchState((byte)-1, false, 1.0, "lowering");
+        public static final WinchState LOWERING_SLOW = new WinchState((byte)-1, false, 0.5, "lowering slow");
         public static final WinchState STOPPED = new WinchState((byte)0, false, 0.0, "stopped");
         public static final WinchState FREE = new WinchState((byte)1, true, 0.0, "free");
         
