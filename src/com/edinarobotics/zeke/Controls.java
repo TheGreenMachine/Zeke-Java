@@ -33,9 +33,9 @@ public class Controls {
         gamepad2 = new FilteredGamepad(2, shootGamepadFilterSet);
         
         // Shooter controls
-        //gamepad2.rightBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.LOWERING));
-        //gamepad2.rightBumper().whenReleased(new SetShooterCommand(Shooter.WinchState.STOPPED));
-        //gamepad2.leftBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.FREE));
+        gamepad2.rightBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.LOWERING));
+        gamepad2.rightBumper().whenReleased(new SetShooterCommand(Shooter.WinchState.STOPPED));
+        gamepad2.leftBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.FREE));
         
         // Collector controls
         gamepad2.diamondLeft().whenPressed(new SetCollectorCommand(true, Collector.CollectorWheelState.COLLECTING));
@@ -44,6 +44,7 @@ public class Controls {
         gamepad2.diamondDown().whenReleased(new SetCollectorCommand(true, Collector.CollectorWheelState.STOPPED));
         gamepad2.diamondRight().whenPressed(new SetCollectorCommand(true, Collector.CollectorWheelState.HOLDING));
         gamepad2.diamondRight().whenReleased(new SetCollectorCommand(true, Collector.CollectorWheelState.STOPPED));
+        gamepad2.diamondUp().whenPressed(new SetCollectorCommand(false, Collector.CollectorWheelState.STOPPED));
     }
     
     /**
