@@ -29,11 +29,11 @@ public class Shooter extends Subsystem1816 {
     private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kReverse;
 
     public Shooter(int winchPort, int doubleSolenoidForward, int doubleSolenoidReverse,
-            int shooterPotPort, DigitalInput limitSwitch) {
+            int shooterPotPort, int limitSwitchPort) {
         winch = new Talon(winchPort);
         solenoidRelease = new DoubleSolenoid(doubleSolenoidForward, doubleSolenoidReverse);
         shooterPot = new AnalogPotentiometer(shooterPotPort, SCALE, OFFSET);
-        lowerLimitSwitch = limitSwitch;
+        lowerLimitSwitch = new DigitalInput(1, 6);
         winchState = WinchState.STOPPED;
         
     }
@@ -65,8 +65,7 @@ public class Shooter extends Subsystem1816 {
             winch.set(winchState.getMotorSpeed());
         }
         
-        if(Components.getInstance().collector.isCollectorRetracted()
-            && winchState.isPistonEngaged()) {
+        if(Components.getInstance().collector.getDeployed() && winchState.isPistonEngaged()) {
             solenoidRelease.set(ENGAGED);
         } else {
             solenoidRelease.set(DISENGAGED);
@@ -74,7 +73,7 @@ public class Shooter extends Subsystem1816 {
     }
     
     public boolean getShooterLimitSwitch() {
-        return true;
+        return lowerLimitSwitch.get();
     }
     
     public static final class WinchState {
