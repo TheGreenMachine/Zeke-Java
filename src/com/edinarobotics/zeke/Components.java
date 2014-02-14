@@ -30,6 +30,7 @@ public class Components {
     
     // Analog Inputs
     private static final int GYRO = 1;
+    private static final int ULTRASONIC_SENSOR = 2;
     private static final int SHOOTER_POT_PORT = 3;
     // END Analog Inputs
     
@@ -85,7 +86,7 @@ public class Components {
      */
     private Components(){
         drivetrain = new Drivetrain(FRONT_LEFT_DRIVE, REAR_LEFT_DRIVE,
-                FRONT_RIGHT_DRIVE, REAR_RIGHT_DRIVE);
+                FRONT_RIGHT_DRIVE, REAR_RIGHT_DRIVE, ULTRASONIC_SENSOR);
         drivetrainStrafe = new DrivetrainStrafe(drivetrain);
         drivetrainRotation = new DrivetrainRotation(drivetrain, GYRO);
         shooter = new Shooter(WINCH_TALON, SHOOTER_DOUBLESOLENOID_FORWARD, SHOOTER_DOUBLESOLENOID_REVERSE,
