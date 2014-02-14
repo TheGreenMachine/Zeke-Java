@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class Shooter extends Subsystem1816 {
     
+    public static final double FIRING_HEIGHT = Shooter.MIN_SAFE_HEIGHT;
+
+    
     private Logger log = LogSystem.getLogger("zeke.shooter");
     
     private Talon winch;

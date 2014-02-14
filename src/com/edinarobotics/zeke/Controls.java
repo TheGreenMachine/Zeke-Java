@@ -7,6 +7,7 @@ import com.edinarobotics.utils.gamepad.gamepadfilters.*;
 import com.edinarobotics.zeke.commands.SetCollectorCommand;
 import com.edinarobotics.zeke.commands.SetPusherCommand;
 import com.edinarobotics.zeke.commands.SetShooterCommand;
+import com.edinarobotics.zeke.commands.ShootingSequenceCommand;
 import com.edinarobotics.zeke.subsystems.Collector;
 import com.edinarobotics.zeke.subsystems.Shooter;
 import java.util.Vector;
@@ -39,6 +40,7 @@ public class Controls {
         gamepad2.leftBumper().whenPressed(new SetShooterCommand(Shooter.WinchState.FREE));
         gamepad2.leftTrigger().whenPressed(new SetPusherCommand(true));
         gamepad2.leftTrigger().whenReleased(new SetPusherCommand(false));
+        gamepad2.middleRight().whenPressed(new ShootingSequenceCommand());
         
         // Collector controls
         gamepad2.diamondLeft().whenPressed(new SetCollectorCommand(true, Collector.CollectorWheelState.COLLECTING));

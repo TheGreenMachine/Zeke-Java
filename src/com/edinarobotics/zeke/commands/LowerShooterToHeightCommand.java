@@ -23,12 +23,15 @@ public class LowerShooterToHeightCommand extends Command {
 
     protected void execute() {
 	this.currentHeight = shooter.getStringPot();
-        if (currentHeight > targetHeight && shooter.getShooterLimitSwitch()) {
+        if (currentHeight > targetHeight && !shooter.getShooterLimitSwitch()) {
             shooter.setWinchState(Shooter.WinchState.LOWERING);
 	}
     }
 
     protected boolean isFinished() {
+        if(currentHeight <= targetHeight || shooter.getShooterLimitSwitch()) {
+            return true;
+        }
         return false;
     }
 
