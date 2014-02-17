@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Talon;
 public class Shooter extends Subsystem1816 {
     
     public static final double FIRING_HEIGHT = Shooter.MIN_SAFE_HEIGHT;
-
     
     private Logger log = LogSystem.getLogger("zeke.shooter");
     
@@ -27,7 +26,7 @@ public class Shooter extends Subsystem1816 {
     
     private static final double SCALE = 6.317;
     private static final double OFFSET = -1.579;
-    private static final double MIN_SAFE_HEIGHT = 2.294;
+    private static final double MIN_SAFE_HEIGHT = 2.24;
     private static final double MAX_PUSH_HEIGHT = 3.0;
     private static final double SLOW_MOVEMENT_HEIGHT = 1.0;
     
