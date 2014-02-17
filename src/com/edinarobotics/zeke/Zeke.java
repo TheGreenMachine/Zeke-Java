@@ -16,8 +16,11 @@ import com.edinarobotics.utils.log.filters.MinimumLevelFilter;
 import com.edinarobotics.utils.log.handlers.PrintHandler;
 import com.edinarobotics.zeke.commands.GamepadDriveRotationCommand;
 import com.edinarobotics.zeke.commands.GamepadDriveStrafeCommand;
+import com.edinarobotics.zeke.commands.LowerShooterToHeightCommand;
+import com.edinarobotics.zeke.commands.ShootingSequenceCommand;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
+import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -35,8 +38,10 @@ public class Zeke extends IterativeRobot {
         zekeLogger = LogSystem.getLogger("zeke");
         LogSystem.getRootLogger().setHandler(new PrintHandler(System.out));
         LogSystem.getRootLogger().setFilter(new MinimumLevelFilter(Level.INFO));
+        
         Controls.getInstance(); //Create all robot controls.
         Components.getInstance(); //Create all robot subsystems.
+        autonomousCommand = new ShootingSequenceCommand();
         zekeLogger.log(Level.INFO, "Zeke is alive.");
     }
     
@@ -67,11 +72,14 @@ public class Zeke extends IterativeRobot {
     }
 
     public void teleopInit() {
+        autonomousCommand.cancel();
         Gamepad gamepad1 = Controls.getInstance().gamepad1;
         Components.getInstance().drivetrainRotation
                 .setDefaultCommand(new GamepadDriveRotationCommand(gamepad1));
         Components.getInstance().drivetrainStrafe
                 .setDefaultCommand(new GamepadDriveStrafeCommand(gamepad1));
+        Command teleopLowerShooterCommand = new LowerShooterToHeightCommand(Shooter.FIRING_HEIGHT);
+        teleopLowerShooterCommand.start();
         zekeLogger.log(Level.INFO, "Initialized teleop.");
     }
 
