@@ -15,9 +15,9 @@ public class ShootingSequenceCommand extends CommandGroup {
         collector = Components.getInstance().collector;
         
         this.addSequential(new SetCollectorCommand(false, Collector.CollectorWheelState.STOPPED));
-        this.addSequential(new WaitCommand(2));
+        this.addSequential(new WaitCommand(4));
         this.addSequential(new SetShooterCommand(Shooter.WinchState.FREE));
-        this.addSequential(new WaitCommand(10));
+        this.addSequential(new WaitCommand(6));
         this.addSequential(new LowerShooterToHeightCommand(Shooter.FIRING_HEIGHT));
     }
 }
