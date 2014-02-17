@@ -6,6 +6,7 @@ import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -29,14 +30,13 @@ public class Components {
     public final Compressor compressor;
     
     // Analog Inputs
-    private static final int GYRO = 1;
-    private static final int ULTRASONIC_SENSOR = 2;
-    private static final int SHOOTER_POT_PORT = 3;
+        private static final int GYRO = 1;
+        private static final int ULTRASONIC_SENSOR = 4;
+        private static final int SHOOTER_POT_PORT = 3;
     // END Analog Inputs
     
     // Digital IO Constants
         // Drivetrain Encoders
-    /*
         private static final DigitalInput FRONT_LEFT_A  = new DigitalInput(1, 1);
         private static final DigitalInput FRONT_LEFT_B  = new DigitalInput(1, 2);
         private static final DigitalInput REAR_LEFT_A   = new DigitalInput(1, 3);
@@ -45,7 +45,7 @@ public class Components {
         private static final DigitalInput FRONT_RIGHT_B = new DigitalInput(1, 6);
         private static final DigitalInput REAR_RIGHT_A  = new DigitalInput(1, 7);
         private static final DigitalInput REAR_RIGHT_B  = new DigitalInput(1, 8);
-        */
+
         // Limit Switches
         private static final int SHOOTER_LOWER_LIMIT = 6;
         
@@ -80,6 +80,8 @@ public class Components {
         // Compressor
         private static final int COMPRESSOR_RELAY = 1;
     // END Relay constants
+    
+    
     /**
      * Private constructor for the Components singleton. This constructor
      * is only called once and handles creating all the robot subsystems.
