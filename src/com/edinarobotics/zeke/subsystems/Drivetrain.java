@@ -13,10 +13,7 @@ public class Drivetrain implements Updatable {
     private Talon frontLeftT, frontRightT, rearLeftT, rearRightT;
     private UltrasonicSensor ultrasonicSensor;
     
-    private static final double ULTRASONIC_START_VOLTAGE = 0;
-    private static final double ULTRASONIC_END_VOLTAGE = 1;
-    private static final double ULTRASONIC_START_DISTANCE = 0;
-    private static final double ULTRASONIC_END_DISTANCE = 1;
+    private static final double ULTRASONIC_SCALE = 6.799;
     
     public Drivetrain(int frontLeft, int rearLeft,
            int frontRight, int rearRight, int ultrasonicSensorChannel) {
@@ -25,8 +22,7 @@ public class Drivetrain implements Updatable {
         rearLeftT = new Talon(rearLeft);
         rearRightT = new Talon(rearRight);
         ultrasonicSensor = new UltrasonicSensor(ultrasonicSensorChannel, 
-                ULTRASONIC_START_VOLTAGE, ULTRASONIC_END_VOLTAGE, 
-                ULTRASONIC_START_DISTANCE, ULTRASONIC_END_DISTANCE);
+                ULTRASONIC_SCALE);
         this.robotDrive = new RobotDrive(frontLeftT, rearLeftT,
                frontRightT, rearRightT);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, false);
@@ -52,6 +48,10 @@ public class Drivetrain implements Updatable {
     
     public double getDirection() {
         return direction;
+    }
+    
+    public UltrasonicSensor getUltrasonicSensor() {
+        return ultrasonicSensor;
     }
     
     public void update() {
