@@ -14,6 +14,7 @@ import com.edinarobotics.utils.log.LogSystem;
 import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.log.filters.MinimumLevelFilter;
 import com.edinarobotics.utils.log.handlers.PrintHandler;
+import com.edinarobotics.zeke.commands.AutonomousCommand;
 import com.edinarobotics.zeke.commands.GamepadDriveRotationCommand;
 import com.edinarobotics.zeke.commands.GamepadDriveStrafeCommand;
 import com.edinarobotics.zeke.commands.LowerShooterToHeightCommand;
@@ -41,7 +42,7 @@ public class Zeke extends IterativeRobot {
         
         Controls.getInstance(); //Create all robot controls.
         Components.getInstance(); //Create all robot subsystems.
-        autonomousCommand = new ShootingSequenceCommand();
+        autonomousCommand = new AutonomousCommand();
         zekeLogger.log(Level.INFO, "Zeke is alive.");
     }
     
