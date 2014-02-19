@@ -14,6 +14,7 @@ import com.edinarobotics.utils.log.LogSystem;
 import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.log.filters.MinimumLevelFilter;
 import com.edinarobotics.utils.log.handlers.PrintHandler;
+import com.edinarobotics.utils.pid.PIDTuningManager;
 import com.edinarobotics.zeke.commands.GamepadDriveRotationCommand;
 import com.edinarobotics.zeke.commands.GamepadDriveStrafeCommand;
 import com.edinarobotics.zeke.commands.LowerShooterToHeightCommand;
@@ -95,10 +96,16 @@ public class Zeke extends IterativeRobot {
         Components.getInstance().drivetrainStrafe.setMecanumPolarStrafe(0, 0);
     }
     
+    public void testInit(){
+        LiveWindow.setEnabled(false);
+        teleopInit();
+    }
+    
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-        LiveWindow.run();
+        PIDTuningManager.getInstance().runTuning();
+        Scheduler.getInstance().run();
     }
 }
