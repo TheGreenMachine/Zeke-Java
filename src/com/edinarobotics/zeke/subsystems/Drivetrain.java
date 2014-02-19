@@ -4,12 +4,10 @@ import com.edinarobotics.utils.common.Updatable;
 import com.edinarobotics.utils.sensors.UltrasonicSensor;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Talon;
 
 public class Drivetrain implements Updatable {
     private RobotDrive robotDrive;
     private double magnitude, direction, rotation;
-    private Talon frontLeftT, frontRightT, rearLeftT, rearRightT;
     private UltrasonicSensor ultrasonicSensor;
     private DriverStationLCD driverStationLCD;
     
@@ -17,15 +15,11 @@ public class Drivetrain implements Updatable {
     
     public Drivetrain(int frontLeft, int rearLeft,
            int frontRight, int rearRight, int ultrasonicSensorChannel) {
-        frontLeftT = new Talon(frontLeft);
-        frontRightT = new Talon(frontRight);
-        rearLeftT = new Talon(rearLeft);
-        rearRightT = new Talon(rearRight);
         ultrasonicSensor = new UltrasonicSensor(ultrasonicSensorChannel, 
                 ULTRASONIC_SCALE);
-        this.robotDrive = new RobotDrive(frontLeftT, rearLeftT,
-               frontRightT, rearRightT);
         this.driverStationLCD = DriverStationLCD.getInstance();
+        this.robotDrive = new RobotDrive(frontLeft, rearLeft,
+               frontRight, rearRight);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, false);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);

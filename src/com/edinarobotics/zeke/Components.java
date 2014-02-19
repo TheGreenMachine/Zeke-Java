@@ -37,7 +37,6 @@ public class Components {
     
     // Digital IO Constants
         // Drivetrain Encoders
-        /*
         private static final DigitalInput FRONT_LEFT_A  = new DigitalInput(1, 1);
         private static final DigitalInput FRONT_LEFT_B  = new DigitalInput(2, 1);
         private static final DigitalInput REAR_LEFT_A   = new DigitalInput(1, 2);
@@ -46,7 +45,7 @@ public class Components {
         private static final DigitalInput FRONT_RIGHT_B = new DigitalInput(2, 3);
         private static final DigitalInput REAR_RIGHT_A  = new DigitalInput(1, 4);
         private static final DigitalInput REAR_RIGHT_B  = new DigitalInput(2, 4);
-        */
+        
         // Limit Switches
         private static final int SHOOTER_LOWER_LIMIT = 6;
         private static final int COLLECTOR_UPPER_LIMIT = 7;
