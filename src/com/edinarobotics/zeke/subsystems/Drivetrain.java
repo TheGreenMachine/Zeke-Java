@@ -25,6 +25,7 @@ public class Drivetrain implements Updatable {
                 ULTRASONIC_SCALE);
         this.robotDrive = new RobotDrive(frontLeftT, rearLeftT,
                frontRightT, rearRightT);
+        this.driverStationLCD = DriverStationLCD.getInstance();
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, false);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
@@ -57,7 +58,7 @@ public class Drivetrain implements Updatable {
     public void update() {
         robotDrive.mecanumDrive_Polar(magnitude, direction, rotation);
         driverStationLCD.clear();
-        driverStationLCD.println(DriverStationLCD.Line.kUser1, 0, "Ultrasonic (ft): "
+        driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "Ultrasonic (ft): "
                 + getUltrasonicSensor().getDistance());
         driverStationLCD.updateLCD();
     }
