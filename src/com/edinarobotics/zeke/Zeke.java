@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Zeke extends IterativeRobot {
     private Logger zekeLogger;
-    Command autonomousCommand;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -42,7 +41,6 @@ public class Zeke extends IterativeRobot {
         
         Controls.getInstance(); //Create all robot controls.
         Components.getInstance(); //Create all robot subsystems.
-        autonomousCommand = new ShootingSequenceCommand();
         zekeLogger.log(Level.INFO, "Zeke is alive.");
     }
     
@@ -57,7 +55,6 @@ public class Zeke extends IterativeRobot {
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
-        autonomousCommand.start();
         DrivetrainRotation drivetrainRotation = Components.getInstance().drivetrainRotation;
         drivetrainRotation.setDefaultCommand(new MaintainStateCommand(drivetrainRotation));
         DrivetrainStrafe drivetrainStrafe = Components.getInstance().drivetrainStrafe;
@@ -73,7 +70,6 @@ public class Zeke extends IterativeRobot {
     }
 
     public void teleopInit() {
-        autonomousCommand.cancel();
         Gamepad gamepad1 = Controls.getInstance().gamepad1;
         Components.getInstance().drivetrainRotation
                 .setDefaultCommand(new GamepadDriveRotationCommand(gamepad1));
