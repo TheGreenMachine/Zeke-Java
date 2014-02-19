@@ -68,9 +68,9 @@ public class Collector extends Subsystem1816 {
     
     public static final class CollectorState {
         public static final CollectorState DEPLOYED =
-                new CollectorState((byte)0, DoubleSolenoid.Value.kForward, "deployed");
+                new CollectorState((byte)0, DoubleSolenoid.Value.kReverse, "deployed");
         public static final CollectorState RETRACTED =
-                new CollectorState((byte)1, DoubleSolenoid.Value.kReverse, "retracted");
+                new CollectorState((byte)1, DoubleSolenoid.Value.kForward, "retracted");
         
         private String stateName;
         private byte collectorState;
