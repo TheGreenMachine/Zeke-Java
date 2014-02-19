@@ -3,7 +3,6 @@ package com.edinarobotics.zeke.commands;
 import com.edinarobotics.zeke.Components;
 import com.edinarobotics.zeke.subsystems.Shooter;
 import com.edinarobotics.zeke.subsystems.Shooter.WinchState;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetShooterCommand extends Command {
