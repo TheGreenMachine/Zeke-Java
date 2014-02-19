@@ -11,12 +11,15 @@ public class WaitForCollectorUndeployedCommand extends Command {
         collector = Components.getInstance().collector;
         setInterruptible(false);
         setTimeout(4.5);
+        requires(collector);
     }
     
     protected void initialize() {
+        collector.setDeployed(Collector.CollectorState.RETRACTED);
     }
 
     protected void execute() {
+        collector.setDeployed(Collector.CollectorState.RETRACTED);
     }
 
     protected boolean isFinished() {
