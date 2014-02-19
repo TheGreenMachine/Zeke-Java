@@ -1,5 +1,8 @@
 package com.edinarobotics.zeke;
 
+import com.edinarobotics.utils.pid.PIDConstant;
+import com.edinarobotics.utils.wheel.SpeedControlledWheel;
+import com.edinarobotics.utils.wheel.Wheel;
 import com.edinarobotics.zeke.subsystems.Collector;
 import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
@@ -7,6 +10,8 @@ import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Talon;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -87,8 +92,16 @@ public class Components {
      * is only called once and handles creating all the robot subsystems.
      */
     private Components(){
-        drivetrain = new Drivetrain(FRONT_LEFT_DRIVE, REAR_LEFT_DRIVE,
-                FRONT_RIGHT_DRIVE, REAR_RIGHT_DRIVE, ULTRASONIC_SENSOR);
+        Wheel frontLeft = makeDriveWheel("Front Left", FRONT_LEFT_DRIVE,
+                FRONT_LEFT_A, FRONT_LEFT_B);
+        Wheel frontRight = makeDriveWheel("Front Right", FRONT_RIGHT_DRIVE,
+                FRONT_RIGHT_A, FRONT_RIGHT_B);
+        Wheel rearLeft = makeDriveWheel("Rear Left", REAR_LEFT_DRIVE,
+                REAR_LEFT_A, REAR_LEFT_B);
+        Wheel rearRight = makeDriveWheel("Rear Right", REAR_RIGHT_DRIVE,
+                REAR_RIGHT_A, REAR_RIGHT_B);
+        drivetrain = new Drivetrain(frontLeft, rearLeft, frontRight, rearRight,
+                ULTRASONIC_SENSOR);
         drivetrainStrafe = new DrivetrainStrafe(drivetrain);
         drivetrainRotation = new DrivetrainRotation(drivetrain, GYRO);
         shooter = new Shooter(WINCH_TALON, SHOOTER_DOUBLESOLENOID_FORWARD, SHOOTER_DOUBLESOLENOID_REVERSE,
@@ -109,6 +122,19 @@ public class Components {
             instance = new Components();
         }
         return instance;
+    }
+    
+    private static Wheel makeDriveWheel(String name, int talonChan, DigitalInput encoderA, DigitalInput encoderB){
+        Encoder encoder = new Encoder(encoderA, encoderB);
+        encoder.setDistancePerPulse(1.0/360.0);
+        double MAX_RPM = 390;
+        double GEAR_RATIO = 12.75;
+        double ENC_ROT_PULSE = 1.0/360.0;
+        PIDConstant pid = new PIDConstant(1.0, 0, 0 ,0);
+        return new SpeedControlledWheel(name, new Talon(talonChan), MAX_RPM, pid, encoder, 
+                GEAR_RATIO, ENC_ROT_PULSE, false);
+        //return new Wheel(name, new Talon(talonChan), false);
+        //Uncomment the above to disable drivetrain PID
     }
     
 }
