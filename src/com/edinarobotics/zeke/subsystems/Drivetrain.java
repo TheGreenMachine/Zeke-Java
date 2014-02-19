@@ -2,8 +2,7 @@ package com.edinarobotics.zeke.subsystems;
 
 import com.edinarobotics.utils.common.Updatable;
 import com.edinarobotics.utils.sensors.UltrasonicSensor;
-import edu.wpi.first.wpilibj.AnalogChannel;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -12,8 +11,9 @@ public class Drivetrain implements Updatable {
     private double magnitude, direction, rotation;
     private Talon frontLeftT, frontRightT, rearLeftT, rearRightT;
     private UltrasonicSensor ultrasonicSensor;
+    private DriverStationLCD driverStationLCD;
     
-    private static final double ULTRASONIC_SCALE = 6.799;
+    public static final double ULTRASONIC_SCALE = 6.799; //Value is in feet/volt
     
     public Drivetrain(int frontLeft, int rearLeft,
            int frontRight, int rearRight, int ultrasonicSensorChannel) {
@@ -56,8 +56,10 @@ public class Drivetrain implements Updatable {
     
     public void update() {
         robotDrive.mecanumDrive_Polar(magnitude, direction, rotation);
-        
-        
+        driverStationLCD.clear();
+        driverStationLCD.println(DriverStationLCD.Line.kUser1, 0, "Ultrasonic (ft): "
+                + getUltrasonicSensor().getDistance());
+        driverStationLCD.updateLCD();
     }
 }
 
