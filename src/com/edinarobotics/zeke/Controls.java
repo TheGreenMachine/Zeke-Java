@@ -51,8 +51,6 @@ public class Controls {
         // Shooter controls
         gamepad2.rightTrigger().whenPressed(new SetShooterCommand(Shooter.WinchState.FREE));
         gamepad2.rightBumper().whenPressed(new LowerShooterToHeightCommand(Shooter.FIRING_HEIGHT));
-        gamepad2.diamondDown().whenPressed(new SetPusherCommand(true));
-        gamepad2.diamondDown().whenReleased(new SetPusherCommand(false));
         gamepad2.middleRight().whenPressed(new ShootingSequenceCommand(true));
         
     }
