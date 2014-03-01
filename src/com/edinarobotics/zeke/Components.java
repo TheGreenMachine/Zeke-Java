@@ -72,9 +72,6 @@ public class Components {
         // Shooter
         private static final int SHOOTER_DOUBLESOLENOID_FORWARD = 3;
         private static final int SHOOTER_DOUBLESOLENOID_REVERSE = 4;
-        // Pusher
-        private static final int PUSHER_DOUBLESOLENOID_FORWARD = 6;
-        private static final int PUSHER_DOUBLESOLENOID_REVERSE = 5;
     // END Solenoid constants
         
     // Relay constats
@@ -93,7 +90,6 @@ public class Components {
         drivetrainStrafe = new DrivetrainStrafe(drivetrain);
         drivetrainRotation = new DrivetrainRotation(drivetrain, GYRO);
         shooter = new Shooter(WINCH_TALON, SHOOTER_DOUBLESOLENOID_FORWARD, SHOOTER_DOUBLESOLENOID_REVERSE,
-                PUSHER_DOUBLESOLENOID_FORWARD, PUSHER_DOUBLESOLENOID_REVERSE,
                 SHOOTER_POT_PORT, SHOOTER_LOWER_LIMIT);
         collector = new Collector(COLLECTOR_FRONT_TALON, COLLECTOR_BACK_TALON, 
                     COLLECTOR_DOUBLESOLENOID_FORWARD, COLLECTOR_DOUBLESOLENOID_REVERSE,

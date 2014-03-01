@@ -18,34 +18,26 @@ public class Shooter extends Subsystem1816 {
     
     private Talon winch;
     private DoubleSolenoid winchSolenoidRelease;
-    private DoubleSolenoid pusherSolenoid;
     private AnalogPotentiometer shooterPot;
     private DigitalInput lowerLimitSwitch;
    
     private WinchState winchState;
-    private boolean isPusherDeployed;
     
     private static final double SCALE = 6.317;
     private static final double OFFSET = -1.579;
     private static final double MIN_SAFE_HEIGHT = 2.24;
     private static final double MAX_PUSH_HEIGHT = 3.0;
     
-    private static final DoubleSolenoid.Value PUSHER_OUT = DoubleSolenoid.Value.kForward;
-    private static final DoubleSolenoid.Value PUSHER_IN = DoubleSolenoid.Value.kReverse;
-    
     private static final DoubleSolenoid.Value ENGAGED = DoubleSolenoid.Value.kForward;
     private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kReverse;
 
     public Shooter(int winchPort, int winchSolenoidForward, int winchSolenoidReverse,
-            int pusherSolenoidForward, int pusherSolenoidReverse,
             int shooterPotPort, int limitSwitchPort) {
         winch = new Talon(winchPort);
         winchSolenoidRelease = new DoubleSolenoid(winchSolenoidForward, winchSolenoidReverse);
-        pusherSolenoid = new DoubleSolenoid(pusherSolenoidForward, pusherSolenoidReverse);
         shooterPot = new AnalogPotentiometer(shooterPotPort, SCALE, OFFSET);
         lowerLimitSwitch = new DigitalInput(1, 6);
         winchState = WinchState.STOPPED;
-        isPusherDeployed = false;
     }
     
     public void setWinchState(WinchState winchState) {
@@ -57,21 +49,12 @@ public class Shooter extends Subsystem1816 {
         update();
     }
     
-    public void setPusherDeployed(boolean deploy) {
-        isPusherDeployed = deploy;
-        update();
-    }
-    
     public double getStringPot() {
         return shooterPot.get();
     }
     
     public WinchState getWinchState() {
         return winchState;
-    }
-    
-    public boolean getPusherDeployed() {
-        return isPusherDeployed;
     }
     
     public boolean getShooterLimitSwitch() {
@@ -85,12 +68,6 @@ public class Shooter extends Subsystem1816 {
             winchState = WinchState.STOPPED;
         }
         winch.set(winchState.getMotorSpeed());
-        
-        // Pusher
-        if(getStringPot() > MAX_PUSH_HEIGHT && !winchState.equals(WinchState.STOPPED)) {
-            isPusherDeployed = false;
-        }
-        pusherSolenoid.set(isPusherDeployed ? PUSHER_OUT : PUSHER_IN);
         
         // Solenoid release
         if(Components.getInstance().collector.getDeployed() && winchState.isPistonEngaged()) {

@@ -6,7 +6,6 @@ import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.*;
 import com.edinarobotics.zeke.commands.LowerShooterToHeightCommand;
 import com.edinarobotics.zeke.commands.SetCollectorCommand;
-import com.edinarobotics.zeke.commands.SetPusherCommand;
 import com.edinarobotics.zeke.commands.SetShooterCommand;
 import com.edinarobotics.zeke.commands.ShootingSequenceCommand;
 import com.edinarobotics.zeke.subsystems.Collector.CollectorState;
