@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.Talon;
 public class Shooter extends Subsystem1816 {
     
     public static final double FIRING_HEIGHT = Shooter.MIN_SAFE_HEIGHT;
+    public static final double MAX_SHOOT_DISTANCE = 18.0; //In feet
+    public static final double MIN_SHOOT_DISTANCE = 12.0; //In feet
     
     private Logger log = LogSystem.getLogger("zeke.shooter");
     
@@ -21,7 +23,7 @@ public class Shooter extends Subsystem1816 {
     private AnalogPotentiometer shooterPot;
     private DigitalInput lowerLimitSwitch;
    
-    private WinchState winchState;
+    private WinchState winchState, lastState;
     
     private static final double SCALE = 6.317;
     private static final double OFFSET = -1.579;
@@ -38,6 +40,7 @@ public class Shooter extends Subsystem1816 {
         shooterPot = new AnalogPotentiometer(shooterPotPort, SCALE, OFFSET);
         lowerLimitSwitch = new DigitalInput(1, 6);
         winchState = WinchState.STOPPED;
+        lastState = WinchState.STOPPED;
     }
     
     public void setWinchState(WinchState winchState) {
@@ -67,14 +70,14 @@ public class Shooter extends Subsystem1816 {
                     && winchState.equals(WinchState.LOWERING)) {
             winchState = WinchState.STOPPED;
         }
-        winch.set(winchState.getMotorSpeed());
-        
-        // Solenoid release
-        if(Components.getInstance().collector.getDeployed() && winchState.isPistonEngaged()) {
-            winchSolenoidRelease.set(ENGAGED);
-        } else {
-            winchSolenoidRelease.set(DISENGAGED);
+        else if(Components.getInstance().collector.getDeployed() && lastState.isPistonEngaged()  && winchState.equals(WinchState.FREE)){
+            winchState = WinchState.STOPPED;
         }
+        
+        winch.set(winchState.getMotorSpeed());
+        lastState = winchState;
+        DoubleSolenoid.Value pistonState = (winchState.isPistonEngaged() ? ENGAGED : DISENGAGED);
+        winchSolenoidRelease.set(pistonState);
     }
     
     public static final class WinchState {
@@ -99,7 +102,7 @@ public class Shooter extends Subsystem1816 {
             return winchState;
         }
 
-        private boolean isPistonEngaged() {
+        public boolean isPistonEngaged() {
             return isPistonEngaged;
         }
 
