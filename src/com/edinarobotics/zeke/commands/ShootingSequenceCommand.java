@@ -14,7 +14,7 @@ public class ShootingSequenceCommand extends CommandGroup {
         this.addSequential(new WaitForCollectorUndeployedCommand());
         this.addSequential(new SetShooterCommand(Shooter.WinchState.FREE));
         if(lowerAfterShoot) {
-            this.addSequential(new StartCommand(new LowerShooterAfterWaitCommand()));
+            this.addSequential(new StartCommand(new LowerShooterAfterWaitCommand(3)));
         }
     }
 }
