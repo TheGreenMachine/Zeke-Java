@@ -4,7 +4,6 @@ import com.edinarobotics.zeke.Components;
 import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveXDistanceCommandNoPID extends Command {
@@ -33,7 +32,6 @@ public class DriveXDistanceCommandNoPID extends Command {
     }
 
     protected void execute() {
-        speed = DriverStation.getInstance().getAnalogIn(1);
         drivetrainStrafe.setMecanumPolarStrafe(speed, isForward ? 90.0 : 270.0);
         drivetrainRotation.setMecanumPolarRotate(0.0);
     }
