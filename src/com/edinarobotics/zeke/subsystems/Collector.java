@@ -45,12 +45,20 @@ public class Collector extends Subsystem1816 {
         update();
     }
     
+    public CollectorState getState(){
+        return collectorState;
+    }
+    
     public boolean getDeployed() {
         return !getUndeployed();
     }
     
     public boolean getUndeployed(){
-        return !collectorState.getDeployed() && !upperLimitSwitch.get();
+        return !collectorState.getDeployed() && getUpperLimitSwitch();
+    }
+    
+    public boolean getUpperLimitSwitch(){
+        return upperLimitSwitch.get();
     }
     
     public void setWheelState(CollectorWheelState collectorWheelState) {
@@ -94,8 +102,8 @@ public class Collector extends Subsystem1816 {
             return this.deployState;
         }
         
-        private boolean getDeployed() {
-            return deployState.equals(DoubleSolenoid.Value.kForward) ? true : false;
+        public boolean getDeployed() {
+            return this.equals(DEPLOYED);
         }
         
         public boolean equals(Object collectorState) {
@@ -112,7 +120,7 @@ public class Collector extends Subsystem1816 {
     
     public static final class CollectorWheelState {
         public static final CollectorWheelState COLLECTING = new 
-                CollectorWheelState((byte)0, -0.75, 0.75, "collecting");
+                CollectorWheelState((byte)0, -0.75, 1, "collecting");
         public static final CollectorWheelState HOLDING = new 
                 CollectorWheelState((byte)1, -0.75, 0.0, "holding");
         public static final CollectorWheelState STOPPED = new 
