@@ -8,7 +8,7 @@ public class LowerShooterAfterWaitCommand extends CommandGroup {
 
     public LowerShooterAfterWaitCommand() {
         this.setInterruptible(false);
-        this.addSequential(new WaitCommand(4));
+        this.addSequential(new WaitCommand(3));
         this.addSequential(new LowerShooterToHeightCommand(Shooter.FIRING_HEIGHT));
     }
 }
