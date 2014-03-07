@@ -17,6 +17,7 @@ import com.edinarobotics.utils.log.handlers.PrintHandler;
 import com.edinarobotics.zeke.commands.AutonomousCommand;
 import com.edinarobotics.zeke.commands.GamepadDriveRotationCommand;
 import com.edinarobotics.zeke.commands.GamepadDriveStrafeCommand;
+import com.edinarobotics.zeke.commands.LowerShooterAfterWaitCommand;
 import com.edinarobotics.zeke.commands.LowerShooterToHeightCommand;
 import com.edinarobotics.zeke.subsystems.Collector;
 import com.edinarobotics.zeke.subsystems.Drivetrain;
@@ -65,6 +66,7 @@ public class Zeke extends IterativeRobot {
     
     public void disabledPeriodic() {
         stop();
+        outputData();
     }
 
     public void autonomousInit() {
@@ -95,7 +97,7 @@ public class Zeke extends IterativeRobot {
         Components.getInstance().drivetrainStrafe
                 .setDefaultCommand(new GamepadDriveStrafeCommand(gamepad1));
         
-        Command teleopLowerShooterCommand = new LowerShooterToHeightCommand(Shooter.FIRING_HEIGHT);
+        Command teleopLowerShooterCommand = new LowerShooterAfterWaitCommand(1.5);
         teleopLowerShooterCommand.start();
         zekeLogger.log(Level.INFO, "Initialized teleop.");
     }
