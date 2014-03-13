@@ -18,12 +18,12 @@ import com.edinarobotics.zeke.commands.AutonomousCommand;
 import com.edinarobotics.zeke.commands.GamepadDriveRotationCommand;
 import com.edinarobotics.zeke.commands.GamepadDriveStrafeCommand;
 import com.edinarobotics.zeke.commands.LowerShooterAfterWaitCommand;
-import com.edinarobotics.zeke.commands.LowerShooterToHeightCommand;
 import com.edinarobotics.zeke.subsystems.Collector;
 import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.subsystems.Shooter;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -35,6 +35,7 @@ public class Zeke extends IterativeRobot {
     private Command autonomousCommand;
     
     private NetworkTable statusTable;
+    private DriverStationLCD driverStationLCD = DriverStationLCD.getInstance();
     
     private Shooter shooter;
     private Drivetrain drivetrain;
@@ -98,7 +99,9 @@ public class Zeke extends IterativeRobot {
                 .setDefaultCommand(new GamepadDriveStrafeCommand(gamepad1));
         
         Command teleopLowerShooterCommand = new LowerShooterAfterWaitCommand(1.5);
-        teleopLowerShooterCommand.start();
+        if(!Controls.getInstance().gamepad1.middleLeft().get()){
+            teleopLowerShooterCommand.start();
+        }
         zekeLogger.log(Level.INFO, "Initialized teleop.");
     }
 
@@ -123,6 +126,19 @@ public class Zeke extends IterativeRobot {
         statusTable.putNumber("ultrasounddistance", drivetrain.getUltrasonicSensor().getDistance());
         statusTable.putNumber("maxdistance", Shooter.MAX_SHOOT_DISTANCE);
         statusTable.putNumber("mindistance", Shooter.MIN_SHOOT_DISTANCE);
+        driverStationLCD.clear();
+        driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "Ultrasonic (ft): "+drivetrain.getUltrasonicSensor().getDistance());
+        double distance = drivetrain.getUltrasonicSensor().getDistance();
+        boolean distanceStatus = (distance > 17.5 && distance < 18.1) || (distance > 9.4 && distance < 10.0);
+        driverStationLCD.println(DriverStationLCD.Line.kUser2, 1, "Distance: "+(distanceStatus ? "GOOD DISTANCE!!":"Bad"));
+        boolean shootHeightStatus = shooter.getStringPot() < 3.0;
+        driverStationLCD.println(DriverStationLCD.Line.kUser3, 1, "Shooter Height: "+(shootHeightStatus ? "Good Height":"Bad"));
+        driverStationLCD.println(DriverStationLCD.Line.kUser4, 1, "Shoot Status: "+(shootHeightStatus&&distanceStatus ? "GOOD TO FIRE!!!!!!!":"not good"));
+        if(shootHeightStatus && distanceStatus){
+            driverStationLCD.println(DriverStationLCD.Line.kUser5, 1, "!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!");
+            driverStationLCD.println(DriverStationLCD.Line.kUser6, 1, "**************************************************************");
+        }
+        driverStationLCD.updateLCD();
     }
     
     public void testInit(){
