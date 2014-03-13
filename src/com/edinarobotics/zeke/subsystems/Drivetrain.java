@@ -2,14 +2,12 @@ package com.edinarobotics.zeke.subsystems;
 
 import com.edinarobotics.utils.common.Updatable;
 import com.edinarobotics.utils.sensors.UltrasonicSensor;
-import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class Drivetrain implements Updatable {
     private RobotDrive robotDrive;
     private double magnitude, direction, rotation;
     private UltrasonicSensor ultrasonicSensor;
-    private DriverStationLCD driverStationLCD;
     
     public static final double ULTRASONIC_SCALE = 6.799; //Value is in feet/volt
     
@@ -17,7 +15,6 @@ public class Drivetrain implements Updatable {
            int frontRight, int rearRight, int ultrasonicSensorChannel) {
         ultrasonicSensor = new UltrasonicSensor(ultrasonicSensorChannel, 
                 ULTRASONIC_SCALE);
-        this.driverStationLCD = DriverStationLCD.getInstance();
         this.robotDrive = new RobotDrive(frontLeft, rearLeft,
                frontRight, rearRight);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, false);
@@ -51,10 +48,6 @@ public class Drivetrain implements Updatable {
     
     public void update() {
         robotDrive.mecanumDrive_Polar(magnitude, direction, rotation);
-        driverStationLCD.clear();
-        driverStationLCD.println(DriverStationLCD.Line.kUser1, 1, "Ultrasonic (ft): "
-                + getUltrasonicSensor().getDistance());
-        driverStationLCD.updateLCD();
     }
 }
 
