@@ -27,11 +27,10 @@ public class Shooter extends Subsystem1816 {
     
     private static final double SCALE = 6.317;
     private static final double OFFSET = -1.579;
-    private static final double MIN_SAFE_HEIGHT = 2.24;
-    private static final double MAX_PUSH_HEIGHT = 3.0;
+    private static final double MIN_SAFE_HEIGHT = 0.0;
     
-    private static final DoubleSolenoid.Value ENGAGED = DoubleSolenoid.Value.kForward;
-    private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kReverse;
+    private static final DoubleSolenoid.Value ENGAGED = DoubleSolenoid.Value.kReverse;
+    private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kForward;
 
     public Shooter(int winchPort, int winchSolenoidForward, int winchSolenoidReverse,
             int shooterPotPort, int limitSwitchPort) {
@@ -70,7 +69,7 @@ public class Shooter extends Subsystem1816 {
                     && winchState.equals(WinchState.LOWERING)) {
             winchState = WinchState.STOPPED;
         }
-        else if(Components.getInstance().collector.getDeployed() && lastState.isPistonEngaged()  && winchState.equals(WinchState.FREE)){
+        else if(Components.getInstance().collector.getDeployed() && lastState.isPistonEngaged() && winchState.equals(WinchState.FREE)){
             winchState = WinchState.STOPPED;
         }
         
@@ -81,9 +80,9 @@ public class Shooter extends Subsystem1816 {
     }
     
     public static final class WinchState {
-        public static final WinchState LOWERING = new WinchState((byte)0, false, 1.0, "lowering");
-        public static final WinchState STOPPED = new WinchState((byte)1, false, 0.0, "stopped");
-        public static final WinchState FREE = new WinchState((byte)2, true, 0.0, "free");
+        public static final WinchState LOWERING = new WinchState((byte)0, true, 1.0, "lowering");
+        public static final WinchState STOPPED = new WinchState((byte)1, true, 0.0, "stopped");
+        public static final WinchState FREE = new WinchState((byte)2, false, 0.0, "free");
         
         private byte winchState;
         private boolean isPistonEngaged;
