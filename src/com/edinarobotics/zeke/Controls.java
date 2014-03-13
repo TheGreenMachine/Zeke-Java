@@ -6,6 +6,9 @@ import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.*;
 import com.edinarobotics.zeke.commands.LowerShooterToHeightCommand;
 import com.edinarobotics.zeke.commands.SetCollectorCommand;
+import com.edinarobotics.zeke.commands.SetDrivetrainCommand;
+import com.edinarobotics.zeke.commands.SetDrivetrainRotationCommand;
+import com.edinarobotics.zeke.commands.SetDrivetrainStrafeCommand;
 import com.edinarobotics.zeke.commands.SetShooterCommand;
 import com.edinarobotics.zeke.commands.ShootingSequenceCommand;
 import com.edinarobotics.zeke.subsystems.Collector.CollectorState;
@@ -28,6 +31,16 @@ public class Controls {
         driveGamepadFilters.addElement(new PowerFilter(2));
         GamepadFilterSet driveGamepadFilterSet = new GamepadFilterSet(driveGamepadFilters);
         gamepad1 = new FilteredGamepad(1, driveGamepadFilterSet);
+        
+        gamepad1.dPadDown().whileHeld(new SetDrivetrainStrafeCommand(0.15, 270.0));
+        gamepad1.dPadDown().whenReleased(new SetDrivetrainStrafeCommand(0.0, 90.0));
+        gamepad1.dPadUp().whileHeld(new SetDrivetrainStrafeCommand(0.15, 90.0));
+        gamepad1.dPadUp().whenReleased(new SetDrivetrainStrafeCommand(0.0, 90.0));
+        gamepad1.dPadLeft().whileHeld(new SetDrivetrainRotationCommand(-0.2));
+        gamepad1.dPadLeft().whenReleased(new SetDrivetrainRotationCommand(0.0));
+        gamepad1.dPadRight().whileHeld(new SetDrivetrainRotationCommand(0.2));
+        gamepad1.dPadRight().whenReleased(new SetDrivetrainRotationCommand(0.0));
+        
         
         Vector shootGamepadFilters = new Vector();
         driveGamepadFilters.addElement(new DeadzoneFilter(0.1));
