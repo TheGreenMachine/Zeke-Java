@@ -49,7 +49,6 @@ public class DriveXDistanceCommand extends Command {
         pidConfig.setValue(drivetrainRotation.getGyroAngle());
         pidController.setPID(pidConfig.getP(P), pidConfig.getI(I), pidConfig.getD(D), pidConfig.getF(F));
         pidController.setSetpoint(pidConfig.getSetpoint());
-        System.out.println(drivetrainRotation.getGyroAngle() + "  " + drivetrainRotation.getRotation());
     }
 
     protected boolean isFinished() {
