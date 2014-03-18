@@ -69,6 +69,8 @@ public class Components {
         // Collector
         private static final int COLLECTOR_DOUBLESOLENOID_FORWARD = 2;
         private static final int COLLECTOR_DOUBLESOLENOID_REVERSE = 1;
+        private static final int COLLECTOR_DOUBLESOLENOID_OFF = 5;
+        private static final int COLLECTOR_DOUBLESOLENOID_ON = 6;
         // Shooter
         private static final int SHOOTER_DOUBLESOLENOID_FORWARD = 3;
         private static final int SHOOTER_DOUBLESOLENOID_REVERSE = 4;
@@ -93,6 +95,7 @@ public class Components {
                 SHOOTER_POT_PORT, SHOOTER_LOWER_LIMIT);
         collector = new Collector(COLLECTOR_FRONT_TALON, COLLECTOR_BACK_TALON, 
                     COLLECTOR_DOUBLESOLENOID_FORWARD, COLLECTOR_DOUBLESOLENOID_REVERSE,
+                    COLLECTOR_DOUBLESOLENOID_ON, COLLECTOR_DOUBLESOLENOID_OFF, 
                     COLLECTOR_UPPER_LIMIT);
         compressor = new Compressor(COMPRESSOR_PRESSURE_SWITCH, COMPRESSOR_RELAY);
         compressor.start();

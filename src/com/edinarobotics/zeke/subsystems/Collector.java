@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Talon;
 
 public class Collector extends Subsystem1816 {
     private DoubleSolenoid collectorPiston;
+    private DoubleSolenoid collectorValve;
     private Talon collectorWheelFront;
     private Talon collectorWheelBack;
     private DigitalInput upperLimitSwitch;
@@ -20,10 +21,13 @@ public class Collector extends Subsystem1816 {
     private Logger log = LogSystem.getLogger("zeke.collector");
     
     public Collector(int collectorWheelFrontPort, int collectorWheelBackPort, 
-                int doubleSolenoidForward, int doubleSolenoidReverse, int upperLimitSwitchPort) {
+                int doubleSolenoidForward, int doubleSolenoidReverse,
+                int doubleSolenoidValveOff, int doubleSolenoidValveOn, int upperLimitSwitchPort) {
         collectorWheelFront = new Talon(collectorWheelFrontPort);
         collectorWheelBack = new Talon(collectorWheelBackPort);
         collectorPiston = new DoubleSolenoid(doubleSolenoidForward, doubleSolenoidReverse);
+        collectorValve = new DoubleSolenoid(doubleSolenoidValveOn, doubleSolenoidValveOff);
+        
         upperLimitSwitch = new DigitalInput(upperLimitSwitchPort);
         
         collectorState = CollectorState.RETRACTED;
@@ -76,17 +80,19 @@ public class Collector extends Subsystem1816 {
     
     public static final class CollectorState {
         public static final CollectorState DEPLOYED =
-                new CollectorState((byte)0, DoubleSolenoid.Value.kReverse, "deployed");
+                new CollectorState((byte)0, DoubleSolenoid.Value.kReverse, DoubleSolenoid.Value.kOff, "deployed");
         public static final CollectorState RETRACTED =
-                new CollectorState((byte)1, DoubleSolenoid.Value.kForward, "retracted");
+                new CollectorState((byte)1, DoubleSolenoid.Value.kForward, DoubleSolenoid.Value.kReverse, "retracted");
         
         private String stateName;
         private byte collectorState;
         private DoubleSolenoid.Value deployState;
+        private DoubleSolenoid.Value valveState;
         
-        private CollectorState(byte collectorState, DoubleSolenoid.Value deployState, String stateName) {
+        private CollectorState(byte collectorState, DoubleSolenoid.Value deployState, DoubleSolenoid.Value valveState, String stateName) {
             this.collectorState = collectorState;
             this.deployState = deployState;
+            this.valveState = valveState;
             this.stateName = stateName;
         }
         
