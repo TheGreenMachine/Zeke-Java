@@ -4,13 +4,7 @@ package com.edinarobotics.zeke;
 import com.edinarobotics.utils.gamepad.FilteredGamepad;
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.utils.gamepad.gamepadfilters.*;
-import com.edinarobotics.zeke.commands.LowerShooterToHeightCommand;
-import com.edinarobotics.zeke.commands.SetCollectorCommand;
-import com.edinarobotics.zeke.commands.SetDrivetrainCommand;
-import com.edinarobotics.zeke.commands.SetDrivetrainRotationCommand;
-import com.edinarobotics.zeke.commands.SetDrivetrainStrafeCommand;
-import com.edinarobotics.zeke.commands.SetShooterCommand;
-import com.edinarobotics.zeke.commands.ShootingSequenceCommand;
+import com.edinarobotics.zeke.commands.*;
 import com.edinarobotics.zeke.subsystems.Collector.CollectorState;
 import com.edinarobotics.zeke.subsystems.Collector.CollectorWheelState;
 import com.edinarobotics.zeke.subsystems.Shooter;
@@ -41,7 +35,6 @@ public class Controls {
         gamepad1.dPadRight().whileHeld(new SetDrivetrainRotationCommand(0.2));
         gamepad1.dPadRight().whenReleased(new SetDrivetrainRotationCommand(0.0));
         
-        
         Vector shootGamepadFilters = new Vector();
         driveGamepadFilters.addElement(new DeadzoneFilter(0.1));
         driveGamepadFilters.addElement(new PowerFilter(2));
@@ -49,16 +42,16 @@ public class Controls {
         gamepad2 = new FilteredGamepad(2, shootGamepadFilterSet);
         
         // Collector controls
-        gamepad2.leftTrigger().whenPressed(new SetCollectorCommand(CollectorState.DEPLOYED, CollectorWheelState.STOPPED));
+        gamepad2.leftTrigger().whenPressed(new CollectorDeployCommand());
         gamepad2.leftBumper().whenPressed(new SetCollectorCommand(CollectorState.RETRACTED, CollectorWheelState.STOPPED));
-        gamepad2.dPadUp().whenPressed(new SetCollectorCommand(CollectorState.DEPLOYED, CollectorWheelState.REVERSING));
-        gamepad2.dPadUp().whenReleased(new SetCollectorCommand(CollectorState.DEPLOYED, CollectorWheelState.STOPPED));
-        gamepad2.dPadDown().whenPressed(new SetCollectorCommand(CollectorState.DEPLOYED, CollectorWheelState.COLLECTING));
-        gamepad2.dPadDown().whenReleased(new SetCollectorCommand(CollectorState.DEPLOYED, CollectorWheelState.STOPPED));
-        gamepad2.dPadRight().whenPressed(new SetCollectorCommand(CollectorState.DEPLOYED, CollectorWheelState.HOLDING));
-        gamepad2.dPadRight().whenReleased(new SetCollectorCommand(CollectorState.DEPLOYED, CollectorWheelState.STOPPED));
-        gamepad2.dPadLeft().whenPressed(new SetCollectorCommand(CollectorState.DEPLOYED, CollectorWheelState.HOLDING));
-        gamepad2.dPadLeft().whenReleased(new SetCollectorCommand(CollectorState.DEPLOYED, CollectorWheelState.STOPPED));
+        gamepad2.dPadUp().whenPressed(new SetCollectorCommand(CollectorWheelState.REVERSING));
+        gamepad2.dPadUp().whenReleased(new SetCollectorCommand(CollectorWheelState.STOPPED));
+        gamepad2.dPadDown().whenPressed(new SetCollectorCommand(CollectorWheelState.COLLECTING));
+        gamepad2.dPadDown().whenReleased(new SetCollectorCommand(CollectorWheelState.STOPPED));
+        gamepad2.dPadRight().whenPressed(new SetCollectorCommand(CollectorWheelState.HOLDING));
+        gamepad2.dPadRight().whenReleased(new SetCollectorCommand(CollectorWheelState.STOPPED));
+        gamepad2.dPadLeft().whenPressed(new SetCollectorCommand(CollectorWheelState.HOLDING));
+        gamepad2.dPadLeft().whenReleased(new SetCollectorCommand(CollectorWheelState.STOPPED));
         
         // Shooter controls
         gamepad2.rightTrigger().whenPressed(new SetShooterCommand(Shooter.WinchState.FREE));
