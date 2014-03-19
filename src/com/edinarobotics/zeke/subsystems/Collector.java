@@ -22,7 +22,7 @@ public class Collector extends Subsystem1816 {
     
     public Collector(int collectorWheelFrontPort, int collectorWheelBackPort, 
                 int doubleSolenoidForward, int doubleSolenoidReverse,
-                int doubleSolenoidValveOff, int doubleSolenoidValveOn, int upperLimitSwitchPort) {
+                int doubleSolenoidValveOn, int doubleSolenoidValveOff, int upperLimitSwitchPort) {
         collectorWheelFront = new Talon(collectorWheelFrontPort);
         collectorWheelBack = new Talon(collectorWheelBackPort);
         collectorPiston = new DoubleSolenoid(doubleSolenoidForward, doubleSolenoidReverse);
@@ -35,7 +35,8 @@ public class Collector extends Subsystem1816 {
     }
 
     public void update() {
-        collectorPiston.set(collectorState.getDeployState());
+        collectorPiston.set(collectorState.getPistonState());
+        collectorValve.set(collectorState.getValveState());
         collectorWheelFront.set(collectorWheelState.getFrontWheelSpeed());
         collectorWheelBack.set(collectorWheelState.getBackWheelSpeed());
     }
@@ -79,19 +80,22 @@ public class Collector extends Subsystem1816 {
     }
     
     public static final class CollectorState {
+        public static final CollectorState DEPLOYING =
+                new CollectorState((byte)0, DoubleSolenoid.Value.kReverse, DoubleSolenoid.Value.kReverse, "deploying");
         public static final CollectorState DEPLOYED =
-                new CollectorState((byte)0, DoubleSolenoid.Value.kReverse, DoubleSolenoid.Value.kOff, "deployed");
+                new CollectorState((byte)1, DoubleSolenoid.Value.kReverse, DoubleSolenoid.Value.kOff, "deployed");
         public static final CollectorState RETRACTED =
-                new CollectorState((byte)1, DoubleSolenoid.Value.kForward, DoubleSolenoid.Value.kReverse, "retracted");
+                new CollectorState((byte)2, DoubleSolenoid.Value.kForward, DoubleSolenoid.Value.kReverse, "retracted");
         
         private String stateName;
         private byte collectorState;
-        private DoubleSolenoid.Value deployState;
+        private DoubleSolenoid.Value pistonState;
         private DoubleSolenoid.Value valveState;
         
-        private CollectorState(byte collectorState, DoubleSolenoid.Value deployState, DoubleSolenoid.Value valveState, String stateName) {
+        private CollectorState(byte collectorState, DoubleSolenoid.Value pistonState,
+                DoubleSolenoid.Value valveState, String stateName) {
             this.collectorState = collectorState;
-            this.deployState = deployState;
+            this.pistonState = pistonState;
             this.valveState = valveState;
             this.stateName = stateName;
         }
@@ -104,8 +108,12 @@ public class Collector extends Subsystem1816 {
             return collectorState;
         }
         
-        private DoubleSolenoid.Value getDeployState() {
-            return this.deployState;
+        private DoubleSolenoid.Value getPistonState() {
+            return this.pistonState;
+        }
+        
+        private DoubleSolenoid.Value getValveState() {
+            return this.valveState;
         }
         
         public boolean getDeployed() {
