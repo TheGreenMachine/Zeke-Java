@@ -24,7 +24,7 @@ public class GamepadDriveStrafeCommand extends Command {
 
     protected void execute() {
         double magnitude = gamepad.getGamepadAxisState().getLeftMagnitude();
-        double direction = gamepad.getGamepadAxisState().getLeftDirection();
+        double direction = wpilibAngleCorrection(gamepad.getGamepadAxisState().getLeftDirection());
         drivetrainStrafe.setMecanumPolarStrafe(magnitude, direction);
     }
 
@@ -37,6 +37,18 @@ public class GamepadDriveStrafeCommand extends Command {
 
     protected void interrupted() {
         end();
+    }
+    
+    public static double wpilibAngleCorrection(double normalAngle){
+        //Converts normal angle format to the weird WPILib measurement
+        double convertedAngle = (normalAngle - 90.0) * -1.0;
+        if(convertedAngle > 180.0){
+            return convertedAngle - 360.0;
+        }
+        else if(convertedAngle < -180.0){
+            return convertedAngle + 360.0;
+        }
+        return convertedAngle;
     }
     
 }
