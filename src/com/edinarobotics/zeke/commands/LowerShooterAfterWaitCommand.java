@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 public class LowerShooterAfterWaitCommand extends CommandGroup {
 
     public LowerShooterAfterWaitCommand(double waitTime) {
-        this.setInterruptible(false);
+        this.setInterruptible(true);
         this.addSequential(new WaitCommand(waitTime));
         this.addSequential(new LowerShooterToHeightCommand(Shooter.FIRING_HEIGHT));
     }
