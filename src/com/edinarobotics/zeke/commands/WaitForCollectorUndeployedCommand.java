@@ -15,11 +15,11 @@ public class WaitForCollectorUndeployedCommand extends Command {
     }
     
     protected void initialize() {
-        collector.setDeployed(Collector.CollectorState.RETRACTED);
+        collector.setDeployed(Collector.CollectorState.RETRACT);
     }
 
     protected void execute() {
-        collector.setDeployed(Collector.CollectorState.RETRACTED);
+        collector.setDeployed(Collector.CollectorState.RETRACT);
     }
 
     protected boolean isFinished() {

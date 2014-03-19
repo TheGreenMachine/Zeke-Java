@@ -42,8 +42,8 @@ public class Controls {
         gamepad2 = new FilteredGamepad(2, shootGamepadFilterSet);
         
         // Collector controls
-        gamepad2.leftTrigger().whenPressed(new CollectorDeployCommand());
-        gamepad2.leftBumper().whenPressed(new SetCollectorCommand(CollectorState.RETRACTED, CollectorWheelState.STOPPED));
+        gamepad2.leftTrigger().whenPressed(new SetCollectorCommand(CollectorState.DEPLOY, CollectorWheelState.STOPPED));
+        gamepad2.leftBumper().whenPressed(new SetCollectorCommand(CollectorState.RETRACT, CollectorWheelState.STOPPED));
         gamepad2.dPadUp().whenPressed(new SetCollectorCommand(CollectorWheelState.REVERSING));
         gamepad2.dPadUp().whenReleased(new SetCollectorCommand(CollectorWheelState.STOPPED));
         gamepad2.dPadDown().whenPressed(new SetCollectorCommand(CollectorWheelState.COLLECTING));

@@ -30,7 +30,7 @@ public class Collector extends Subsystem1816 {
         
         upperLimitSwitch = new DigitalInput(upperLimitSwitchPort);
         
-        collectorState = CollectorState.RETRACTED;
+        collectorState = CollectorState.RETRACT;
         collectorWheelState = CollectorWheelState.STOPPED;
     }
 
@@ -80,12 +80,18 @@ public class Collector extends Subsystem1816 {
     }
     
     public static final class CollectorState {
-        public static final CollectorState DEPLOYING =
-                new CollectorState((byte)0, DoubleSolenoid.Value.kReverse, DoubleSolenoid.Value.kReverse, "deploying");
-        public static final CollectorState DEPLOYED =
-                new CollectorState((byte)1, DoubleSolenoid.Value.kReverse, DoubleSolenoid.Value.kOff, "deployed");
-        public static final CollectorState RETRACTED =
-                new CollectorState((byte)2, DoubleSolenoid.Value.kForward, DoubleSolenoid.Value.kReverse, "retracted");
+        private static final DoubleSolenoid.Value VALVE_VENT_S = DoubleSolenoid.Value.kReverse;
+        private static final DoubleSolenoid.Value VALVE_CLOSED = DoubleSolenoid.Value.kForward;
+    
+        private static final DoubleSolenoid.Value COLLECTOR_RETRACTED = DoubleSolenoid.Value.kForward;
+        private static final DoubleSolenoid.Value COLLECTOR_DEPLOYED = DoubleSolenoid.Value.kReverse;
+        
+        public static final CollectorState DEPLOY =
+                new CollectorState((byte)0, COLLECTOR_DEPLOYED, VALVE_CLOSED, "deploy");
+        public static final CollectorState VALVE_VENT =
+                new CollectorState((byte)1, COLLECTOR_DEPLOYED, VALVE_VENT_S, "valve vent");
+        public static final CollectorState RETRACT =
+                new CollectorState((byte)2, COLLECTOR_RETRACTED, VALVE_CLOSED, "retract");
         
         private String stateName;
         private byte collectorState;
@@ -117,7 +123,7 @@ public class Collector extends Subsystem1816 {
         }
         
         public boolean getDeployed() {
-            return this.equals(DEPLOYED);
+            return this.equals(VALVE_VENT) || this.equals(DEPLOY);
         }
         
         public boolean equals(Object collectorState) {

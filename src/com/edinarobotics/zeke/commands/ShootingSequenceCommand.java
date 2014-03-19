@@ -9,7 +9,7 @@ public class ShootingSequenceCommand extends CommandGroup {
     
     public ShootingSequenceCommand(boolean lowerAfterShoot) {
         this.setInterruptible(false);
-        this.addSequential(new SetCollectorCommand(Collector.CollectorState.RETRACTED,
+        this.addSequential(new SetCollectorCommand(Collector.CollectorState.RETRACT,
                 Collector.CollectorWheelState.STOPPED));
         this.addSequential(new WaitForCollectorUndeployedCommand());
         this.addSequential(new SetShooterCommand(Shooter.WinchState.FREE));
