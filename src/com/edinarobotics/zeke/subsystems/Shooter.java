@@ -37,7 +37,7 @@ public class Shooter extends Subsystem1816 {
         winch = new Talon(winchPort);
         winchSolenoidRelease = new DoubleSolenoid(winchSolenoidForward, winchSolenoidReverse);
         shooterPot = new AnalogPotentiometer(shooterPotPort, SCALE, OFFSET);
-        lowerLimitSwitch = new DigitalInput(1, 6);
+        lowerLimitSwitch = new DigitalInput(1, limitSwitchPort);
         winchState = WinchState.STOPPED;
         lastState = WinchState.STOPPED;
     }
