@@ -15,6 +15,8 @@ public class SetCollectorCommand extends Command {
     {
         this.collector = Components.getInstance().collector;
         requires(this.collector);
+        setInterruptible(true);
+        setTimeout(2.0);
     }
     
     public SetCollectorCommand(CollectorState collectorState, CollectorWheelState collectorWheelState) {
@@ -40,13 +42,25 @@ public class SetCollectorCommand extends Command {
     }
 
     protected void execute() {
+        if(collectorState != null) {
+            collector.setDeployed(collectorState);
+        }
+        if(collectorWheelState != null) {
+            collector.setWheelState(collectorWheelState);
+        }
     }
 
     protected boolean isFinished() {
+        if(collectorState != null){
+            return !collectorState.equals(CollectorState.DEPLOY) || isTimedOut();
+        }
         return true;
     }
 
     protected void end() {
+        if(collectorState != null && collectorState.equals(CollectorState.DEPLOY)){
+            collector.setDeployed(CollectorState.VALVE_VENT);
+        }
     }
 
     protected void interrupted() {
