@@ -16,7 +16,7 @@ public class SetCollectorCommand extends Command {
         this.collector = Components.getInstance().collector;
         requires(this.collector);
         setInterruptible(true);
-        setTimeout(2.0);
+        setTimeout(1.0);
     }
     
     public SetCollectorCommand(CollectorState collectorState, CollectorWheelState collectorWheelState) {
