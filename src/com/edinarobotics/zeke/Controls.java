@@ -46,7 +46,7 @@ public class Controls {
         gamepad2.leftBumper().whenPressed(new SetCollectorCommand(CollectorState.RETRACT, CollectorWheelState.STOPPED));
         gamepad2.dPadUp().whenPressed(new SetCollectorCommand(CollectorWheelState.REVERSING));
         gamepad2.dPadUp().whenReleased(new SetCollectorCommand(CollectorWheelState.STOPPED));
-        gamepad2.dPadDown().whenPressed(new SetCollectorCommand(CollectorWheelState.COLLECTING));
+        gamepad2.dPadDown().whenPressed(new SetCollectorCommand(CollectorState.DEPLOY, CollectorWheelState.COLLECTING));
         gamepad2.dPadDown().whenReleased(new SetCollectorCommand(CollectorWheelState.STOPPED));
         gamepad2.dPadRight().whenPressed(new SetCollectorCommand(CollectorWheelState.HOLDING));
         gamepad2.dPadRight().whenReleased(new SetCollectorCommand(CollectorWheelState.STOPPED));
@@ -54,10 +54,10 @@ public class Controls {
         gamepad2.dPadLeft().whenReleased(new SetCollectorCommand(CollectorWheelState.STOPPED));
         
         // Shooter controls
-        gamepad2.rightTrigger().whenPressed(new SetShooterCommand(Shooter.WinchState.FREE));
+        gamepad2.rightTrigger().whileHeld(new SetShooterCommand(Shooter.WinchState.FREE));
         gamepad2.rightBumper().whenPressed(new LowerShooterToHeightCommand(Shooter.FIRING_HEIGHT));
-        gamepad2.middleRight().whenPressed(new ShootingSequenceCommand(true));
-        
+        gamepad2.middleLeft().whenPressed(new SetShooterOverrideCommand(true));
+        gamepad2.middleLeft().whenReleased(new SetShooterOverrideCommand(false));
     }
     
     /**

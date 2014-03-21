@@ -22,6 +22,8 @@ public class Shooter extends Subsystem1816 {
     private DoubleSolenoid winchSolenoidRelease;
     private AnalogPotentiometer shooterPot;
     private DigitalInput lowerLimitSwitch;
+    
+    private boolean shouldOverride;
    
     private WinchState winchState, lastState;
     
@@ -40,6 +42,7 @@ public class Shooter extends Subsystem1816 {
         lowerLimitSwitch = new DigitalInput(1, limitSwitchPort);
         winchState = WinchState.STOPPED;
         lastState = WinchState.STOPPED;
+        shouldOverride = false;
     }
     
     public void setWinchState(WinchState winchState) {
@@ -63,13 +66,17 @@ public class Shooter extends Subsystem1816 {
         return lowerLimitSwitch.get();
     }
     
+    public void setOverride(boolean shouldOverride) {
+        this.shouldOverride = shouldOverride;
+    }
+    
     public void update() {
         // Winch motor
         if((getStringPot() < MIN_SAFE_HEIGHT || getShooterLimitSwitch())
                     && winchState.equals(WinchState.LOWERING)) {
             winchState = WinchState.STOPPED;
         }
-        else if(Components.getInstance().collector.getDeployed() && lastState.isPistonEngaged() && winchState.equals(WinchState.FREE)){
+        else if(Components.getInstance().collector.getDeployed() && lastState.isPistonEngaged() && winchState.equals(WinchState.FREE) && !shouldOverride){
             winchState = WinchState.STOPPED;
         }
         
