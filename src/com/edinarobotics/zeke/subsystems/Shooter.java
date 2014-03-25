@@ -76,7 +76,7 @@ public class Shooter extends Subsystem1816 {
                     && winchState.equals(WinchState.LOWERING)) {
             winchState = WinchState.STOPPED;
         }
-        else if(Components.getInstance().collector.getDeployed() && lastState.isPistonEngaged() && winchState.equals(WinchState.FREE) && !shouldOverride){
+        else if((Components.getInstance().collector.getDeployed() && lastState.isPistonEngaged() && winchState.equals(WinchState.FREE)) && !shouldOverride){
             winchState = WinchState.STOPPED;
         }
         

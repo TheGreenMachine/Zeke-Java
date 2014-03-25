@@ -13,7 +13,6 @@ public class SetShooterOverrideCommand extends Command {
         super("SetShooterOverrideCommand");
         this.shouldOverride = shouldOverride;
         shooter = Components.getInstance().shooter;
-        requires(shooter);
     }
     
     protected void initialize() {
