@@ -5,65 +5,80 @@ import com.edinarobotics.zeke.subsystems.Collector;
 import com.edinarobotics.zeke.subsystems.Collector.CollectorState;
 import com.edinarobotics.zeke.subsystems.Collector.CollectorWheelState;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.StartCommand;
 
-public class SetCollectorCommand extends Command {
+public class SetCollectorCommand extends StartCommand {
     
-    private Collector collector;
-    private CollectorState collectorState;
-    private CollectorWheelState collectorWheelState;
-    
-    {
-        this.collector = Components.getInstance().collector;
-        requires(this.collector);
-        setInterruptible(true);
-        setTimeout(1.0);
+    public SetCollectorCommand(CollectorState collectorState, CollectorWheelState collectorWheelState){
+        super(new InternalSetCollectorCommand(collectorState, collectorWheelState));
     }
     
-    public SetCollectorCommand(CollectorState collectorState, CollectorWheelState collectorWheelState) {
-        this.collectorState = collectorState;
-        this.collectorWheelState = collectorWheelState;
+    public SetCollectorCommand(CollectorState collectorState){
+        super(new InternalSetCollectorCommand(collectorState));
     }
     
-    public SetCollectorCommand(CollectorState collectorState) {
-        this.collectorState = collectorState;
+    public SetCollectorCommand(CollectorWheelState collectorWheelState){
+        super(new InternalSetCollectorCommand(collectorWheelState));
     }
     
-    public SetCollectorCommand(CollectorWheelState collectorWheelState) {
-        this.collectorWheelState = collectorWheelState;
-    }
+    private static class InternalSetCollectorCommand extends Command {
     
-    protected void initialize() {
-        if(collectorState != null) {
-            collector.setDeployed(collectorState);
+        private Collector collector;
+        private CollectorState collectorState;
+        private CollectorWheelState collectorWheelState;
+        
+        {
+            this.collector = Components.getInstance().collector;
+            requires(this.collector);
+            setInterruptible(true);
+            setTimeout(1.0);
         }
-        if(collectorWheelState != null) {
-            collector.setWheelState(collectorWheelState);
+        
+        private InternalSetCollectorCommand(CollectorState collectorState, CollectorWheelState collectorWheelState) {
+            this.collectorState = collectorState;
+            this.collectorWheelState = collectorWheelState;
+        }
+        
+        public InternalSetCollectorCommand(CollectorState collectorState) {
+            this.collectorState = collectorState;
+        }
+        
+        public InternalSetCollectorCommand(CollectorWheelState collectorWheelState) {
+            this.collectorWheelState = collectorWheelState;
+        }
+        
+        protected void initialize() {
+            if(collectorState != null) {
+                collector.setDeployed(collectorState);
+            }
+            if(collectorWheelState != null) {
+                collector.setWheelState(collectorWheelState);
+            }
+        }
+        
+        protected void execute() {
+            if(collectorState != null) {
+                collector.setDeployed(collectorState);
+            }
+            if(collectorWheelState != null) {
+                collector.setWheelState(collectorWheelState);
+            }
+        }
+        
+        protected boolean isFinished() {
+            if(collectorState != null){
+                return !collectorState.equals(CollectorState.DEPLOY) || isTimedOut();
+            }
+            return true;
+        }
+        
+        protected void end() {
+            if(collectorState != null && collectorState.equals(CollectorState.DEPLOY)){
+                collector.setDeployed(CollectorState.VALVE_VENT);
+            }
+        }
+        
+        protected void interrupted() {
         }
     }
-
-    protected void execute() {
-        if(collectorState != null) {
-            collector.setDeployed(collectorState);
-        }
-        if(collectorWheelState != null) {
-            collector.setWheelState(collectorWheelState);
-        }
-    }
-
-    protected boolean isFinished() {
-        if(collectorState != null){
-            return !collectorState.equals(CollectorState.DEPLOY) || isTimedOut();
-        }
-        return true;
-    }
-
-    protected void end() {
-        if(collectorState != null && collectorState.equals(CollectorState.DEPLOY)){
-            collector.setDeployed(CollectorState.VALVE_VENT);
-        }
-    }
-
-    protected void interrupted() {
-    }
-    
 }
