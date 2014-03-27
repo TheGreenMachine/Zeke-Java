@@ -30,7 +30,6 @@ public class Components {
     public final Compressor compressor;
     
     // Analog Inputs
-        private static final int GYRO = 1;
         private static final int ULTRASONIC_SENSOR = 4;
         private static final int SHOOTER_POT_PORT = 3;
     // END Analog Inputs
@@ -89,7 +88,7 @@ public class Components {
         drivetrain = new Drivetrain(FRONT_LEFT_DRIVE, REAR_LEFT_DRIVE,
                 FRONT_RIGHT_DRIVE, REAR_RIGHT_DRIVE, ULTRASONIC_SENSOR);
         drivetrainStrafe = new DrivetrainStrafe(drivetrain);
-        drivetrainRotation = new DrivetrainRotation(drivetrain, GYRO);
+        drivetrainRotation = new DrivetrainRotation(drivetrain);
         shooter = new Shooter(WINCH_TALON, SHOOTER_DOUBLESOLENOID_FORWARD, SHOOTER_DOUBLESOLENOID_REVERSE,
                 SHOOTER_POT_PORT, SHOOTER_LOWER_LIMIT);
         collector = new Collector(COLLECTOR_FRONT_TALON, COLLECTOR_BACK_TALON, 

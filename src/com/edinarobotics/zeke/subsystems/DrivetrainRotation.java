@@ -8,12 +8,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DrivetrainRotation extends Subsystem1816 implements PIDOutput {
     private double rotation;
     private Drivetrain drivetrain;
-    private Gyro gyro;
     
-    public DrivetrainRotation(Drivetrain drivetrain, int channel) {
+    public DrivetrainRotation(Drivetrain drivetrain) {
         super("DrivetrainRotation");
         this.drivetrain = drivetrain;
-        gyro = new Gyro(channel);
     }
     
     public void setMecanumPolarRotate(double rotation) {
@@ -27,18 +25,6 @@ public class DrivetrainRotation extends Subsystem1816 implements PIDOutput {
     
     public double getRotation() {
         return rotation;
-    }
-    
-    public Gyro getGyro(){
-        return gyro;
-    }
-    
-    public double getGyroAngle() {
-        return gyro.getAngle();
-    }
-    
-    public void resetGyro() {
-        gyro.reset();
     }
     
     public void update() {
