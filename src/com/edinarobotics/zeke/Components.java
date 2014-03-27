@@ -48,7 +48,6 @@ public class Components {
         
         // Limit Switches
         private static final int SHOOTER_LOWER_LIMIT = 6;
-        private static final int COLLECTOR_UPPER_LIMIT = 7;
         
         // Compressor Switch
         private static final int COMPRESSOR_PRESSURE_SWITCH = 5;
@@ -95,8 +94,7 @@ public class Components {
                 SHOOTER_POT_PORT, SHOOTER_LOWER_LIMIT);
         collector = new Collector(COLLECTOR_FRONT_TALON, COLLECTOR_BACK_TALON, 
                     COLLECTOR_DOUBLESOLENOID_FORWARD, COLLECTOR_DOUBLESOLENOID_REVERSE,
-                    COLLECTOR_DOUBLESOLENOID_ON, COLLECTOR_DOUBLESOLENOID_OFF, 
-                    COLLECTOR_UPPER_LIMIT);
+                    COLLECTOR_DOUBLESOLENOID_ON, COLLECTOR_DOUBLESOLENOID_OFF);
         compressor = new Compressor(COMPRESSOR_PRESSURE_SWITCH, COMPRESSOR_RELAY);
         compressor.start();
     }

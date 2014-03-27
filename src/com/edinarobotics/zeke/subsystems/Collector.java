@@ -13,7 +13,6 @@ public class Collector extends Subsystem1816 {
     private DoubleSolenoid collectorValve;
     private Talon collectorWheelFront;
     private Talon collectorWheelBack;
-    private DigitalInput upperLimitSwitch;
     
     private CollectorState collectorState;
     private CollectorWheelState collectorWheelState;
@@ -22,13 +21,11 @@ public class Collector extends Subsystem1816 {
     
     public Collector(int collectorWheelFrontPort, int collectorWheelBackPort, 
                 int doubleSolenoidForward, int doubleSolenoidReverse,
-                int doubleSolenoidValveOn, int doubleSolenoidValveOff, int upperLimitSwitchPort) {
+                int doubleSolenoidValveOn, int doubleSolenoidValveOff) {
         collectorWheelFront = new Talon(collectorWheelFrontPort);
         collectorWheelBack = new Talon(collectorWheelBackPort);
         collectorPiston = new DoubleSolenoid(doubleSolenoidForward, doubleSolenoidReverse);
         collectorValve = new DoubleSolenoid(doubleSolenoidValveOn, doubleSolenoidValveOff);
-        
-        upperLimitSwitch = new DigitalInput(upperLimitSwitchPort);
         
         collectorState = CollectorState.RETRACT;
         collectorWheelState = CollectorWheelState.STOPPED;
@@ -59,11 +56,7 @@ public class Collector extends Subsystem1816 {
     }
     
     public boolean getUndeployed(){
-        return !collectorState.getDeployed() && getUpperLimitSwitch();
-    }
-    
-    public boolean getUpperLimitSwitch(){
-        return upperLimitSwitch.get();
+        return !collectorState.getDeployed();
     }
     
     public void setWheelState(CollectorWheelState collectorWheelState) {
