@@ -6,7 +6,7 @@ import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutonomousCommand extends CommandGroup {
-    private static final double DRIVE_DISTANCE_THRESHOLD = 19.8;
+    private static final double DRIVE_DISTANCE_THRESHOLD = 12;
     private static final double SECOND_BALL_DISTANCE = 13.0;
     
     public AutonomousCommand() {
