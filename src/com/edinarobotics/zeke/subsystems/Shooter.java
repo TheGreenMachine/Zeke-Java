@@ -5,6 +5,7 @@ import com.edinarobotics.utils.log.LogSystem;
 import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 import com.edinarobotics.zeke.Components;
+import com.edinarobotics.zeke.subsystems.Collector.CollectorState;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -20,10 +21,12 @@ public class Shooter extends Subsystem1816 {
     
     private Talon winch;
     private DoubleSolenoid winchSolenoidRelease;
+    private DoubleSolenoid pusher;
     private AnalogPotentiometer shooterPot;
     private DigitalInput lowerLimitSwitch;
     
     private boolean shouldOverride;
+    private boolean isPusherDeployed;
    
     private WinchState winchState, lastState;
     
@@ -33,16 +36,20 @@ public class Shooter extends Subsystem1816 {
     
     private static final DoubleSolenoid.Value ENGAGED = DoubleSolenoid.Value.kReverse;
     private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kForward;
+    private static final DoubleSolenoid.Value PUSHER_DEPLOY = DoubleSolenoid.Value.kForward;
+    private static final DoubleSolenoid.Value PUSHER_RETRACT = DoubleSolenoid.Value.kReverse;
 
-    public Shooter(int winchPort, int winchSolenoidForward, int winchSolenoidReverse,
+    public Shooter(int winchPort, int winchSolenoidForward, int winchSolenoidReverse, int pusherSolenoidForward, int pusherSolenoidReverse,
             int shooterPotPort, int limitSwitchPort) {
         winch = new Talon(winchPort);
         winchSolenoidRelease = new DoubleSolenoid(winchSolenoidForward, winchSolenoidReverse);
+        pusher = new DoubleSolenoid(pusherSolenoidForward, pusherSolenoidReverse);
         shooterPot = new AnalogPotentiometer(shooterPotPort, SCALE, OFFSET);
         lowerLimitSwitch = new DigitalInput(1, limitSwitchPort);
         winchState = WinchState.STOPPED;
         lastState = WinchState.STOPPED;
         shouldOverride = false;
+        isPusherDeployed = false;
     }
     
     public void setWinchState(WinchState winchState) {
@@ -69,6 +76,15 @@ public class Shooter extends Subsystem1816 {
     public void setOverride(boolean shouldOverride) {
         this.shouldOverride = shouldOverride;
     }
+     
+    public void setPusher(boolean deploy) {
+        isPusherDeployed = deploy;
+        update();
+    }
+
+    public boolean getPusher() {
+        return isPusherDeployed;
+    }
     
     public void update() {
         // Winch motor
@@ -79,6 +95,12 @@ public class Shooter extends Subsystem1816 {
         else if(!shouldOverride && (Components.getInstance().collector.getDeployed() && lastState.isPistonEngaged() && winchState.equals(WinchState.FREE))){
             winchState = WinchState.STOPPED;
         }
+        
+        //Pusher
+        if(!winchState.equals(WinchState.STOPPED) || !getShooterLimitSwitch()) {
+            isPusherDeployed = false;
+        }
+        pusher.set((isPusherDeployed ? PUSHER_DEPLOY : PUSHER_RETRACT));
         
         winch.set(winchState.getMotorSpeed());
         lastState = winchState;

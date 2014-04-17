@@ -34,6 +34,11 @@ public class Collector extends Subsystem1816 {
     public void update() {
         collectorPiston.set(collectorState.getPistonState());
         collectorValve.set(collectorState.getValveState());
+        
+        if(collectorState.equals(CollectorState.RETRACT)){
+            collectorWheelState = CollectorWheelState.STOPPED;
+        }
+        
         collectorWheelFront.set(collectorWheelState.getFrontWheelSpeed());
         collectorWheelBack.set(collectorWheelState.getBackWheelSpeed());
     }
