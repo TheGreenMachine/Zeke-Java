@@ -1,7 +1,6 @@
 package com.edinarobotics.zeke.subsystems;
 
 import com.edinarobotics.utils.subsystems.Subsystem1816;
-import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -37,5 +36,4 @@ public class DrivetrainRotation extends Subsystem1816 implements PIDOutput {
         }
         super.setDefaultCommand(command);
     }
-    
 }

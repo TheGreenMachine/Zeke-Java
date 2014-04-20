@@ -4,7 +4,6 @@ import com.edinarobotics.utils.log.Level;
 import com.edinarobotics.utils.log.LogSystem;
 import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 

@@ -6,7 +6,6 @@ import com.edinarobotics.zeke.subsystems.Shooter.WinchState;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetShooterCommand extends Command {
-
     private Shooter shooter;
     private WinchState winchState;
     
@@ -22,7 +21,6 @@ public class SetShooterCommand extends Command {
     }
 
     protected void execute() {
-        
     }
 
     protected boolean isFinished() {
@@ -30,11 +28,8 @@ public class SetShooterCommand extends Command {
     }
 
     protected void end() {
-        
     }
 
     protected void interrupted() {
-        
     }
-    
 }

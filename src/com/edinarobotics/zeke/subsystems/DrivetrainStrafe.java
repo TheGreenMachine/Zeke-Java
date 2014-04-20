@@ -28,5 +28,4 @@ public class DrivetrainStrafe extends Subsystem1816 {
         }
         super.setDefaultCommand(command);
     }
-
 }

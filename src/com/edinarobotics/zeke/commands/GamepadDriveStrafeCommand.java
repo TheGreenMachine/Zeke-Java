@@ -5,11 +5,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.Components;
-import com.edinarobotics.utils.gamepad.GamepadAxisState;
 
 public class GamepadDriveStrafeCommand extends Command {
     private Gamepad gamepad;
-    private GamepadAxisState gamepadAxisState;
     private DrivetrainStrafe drivetrainStrafe;
     
     public GamepadDriveStrafeCommand(Gamepad gamepad) {
@@ -50,5 +48,4 @@ public class GamepadDriveStrafeCommand extends Command {
         }
         return convertedAngle;
     }
-    
 }

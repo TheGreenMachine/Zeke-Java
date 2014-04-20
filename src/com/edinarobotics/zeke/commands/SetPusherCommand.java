@@ -5,7 +5,6 @@ import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetPusherCommand extends Command {
-
     private Shooter shooter;
     private boolean shouldDeploy;
     
@@ -21,7 +20,6 @@ public class SetPusherCommand extends Command {
     }
 
     protected void execute() {
-        
     }
 
     protected boolean isFinished() {
@@ -29,11 +27,8 @@ public class SetPusherCommand extends Command {
     }
 
     protected void end() {
-        
     }
 
     protected void interrupted() {
-        
     }
-    
 }

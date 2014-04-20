@@ -31,5 +31,4 @@ public class WaitForCollectorUndeployedCommand extends Command {
 
     protected void interrupted() {
     }
-    
 }

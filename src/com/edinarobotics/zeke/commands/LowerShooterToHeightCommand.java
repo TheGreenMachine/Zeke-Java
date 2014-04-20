@@ -5,7 +5,6 @@ import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class LowerShooterToHeightCommand extends Command {
-    
     private double targetHeight;
     private double currentHeight;
     private Shooter shooter;
@@ -42,5 +41,4 @@ public class LowerShooterToHeightCommand extends Command {
     protected void interrupted() {
         end();
     }
-    
 }

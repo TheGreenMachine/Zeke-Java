@@ -1,7 +1,5 @@
 package com.edinarobotics.zeke.commands;
 
-import com.edinarobotics.zeke.Components;
-import com.edinarobotics.zeke.subsystems.Collector;
 import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

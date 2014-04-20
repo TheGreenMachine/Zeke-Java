@@ -5,42 +5,38 @@ import com.edinarobotics.utils.log.LogSystem;
 import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 import com.edinarobotics.zeke.Components;
-import com.edinarobotics.zeke.subsystems.Collector.CollectorState;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 
 public class Shooter extends Subsystem1816 {
-    
     public static final double FIRING_HEIGHT = Shooter.MIN_SAFE_HEIGHT;
     public static final double MAX_SHOOT_DISTANCE = 18.0; //In feet
     public static final double MIN_SHOOT_DISTANCE = 12.0; //In feet
-    
-    private Logger log = LogSystem.getLogger("zeke.shooter");
+    private static final double SCALE = 6.317;
+    private static final double OFFSET = -1.579;
+    private static final double MIN_SAFE_HEIGHT = 0.0;
     
     private Talon winch;
     private DoubleSolenoid winchSolenoidRelease;
     private DoubleSolenoid pusher;
     private AnalogPotentiometer shooterPot;
     private DigitalInput lowerLimitSwitch;
+    private WinchState winchState, lastState;
     
     private boolean shouldOverride;
     private boolean isPusherDeployed;
    
-    private WinchState winchState, lastState;
-    
-    private static final double SCALE = 6.317;
-    private static final double OFFSET = -1.579;
-    private static final double MIN_SAFE_HEIGHT = 0.0;
-    
     private static final DoubleSolenoid.Value ENGAGED = DoubleSolenoid.Value.kReverse;
     private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kForward;
     private static final DoubleSolenoid.Value PUSHER_DEPLOY = DoubleSolenoid.Value.kForward;
     private static final DoubleSolenoid.Value PUSHER_RETRACT = DoubleSolenoid.Value.kReverse;
+    
+    private Logger log = LogSystem.getLogger("zeke.shooter");
 
-    public Shooter(int winchPort, int winchSolenoidForward, int winchSolenoidReverse, int pusherSolenoidForward, int pusherSolenoidReverse,
-            int shooterPotPort, int limitSwitchPort) {
+    public Shooter(int winchPort, int winchSolenoidForward, int winchSolenoidReverse,
+            int pusherSolenoidForward, int pusherSolenoidReverse, int shooterPotPort, int limitSwitchPort) {
         winch = new Talon(winchPort);
         winchSolenoidRelease = new DoubleSolenoid(winchSolenoidForward, winchSolenoidReverse);
         pusher = new DoubleSolenoid(pusherSolenoidForward, pusherSolenoidReverse);
@@ -92,7 +88,8 @@ public class Shooter extends Subsystem1816 {
                     && winchState.equals(WinchState.LOWERING)) {
             winchState = WinchState.STOPPED;
         }
-        else if(!shouldOverride && (Components.getInstance().collector.getDeployed() && lastState.isPistonEngaged() && winchState.equals(WinchState.FREE))){
+        else if(!shouldOverride && (Components.getInstance().collector.getDeployed()
+                && lastState.isPistonEngaged() && winchState.equals(WinchState.FREE))){
             winchState = WinchState.STOPPED;
         }
         
@@ -149,5 +146,4 @@ public class Shooter extends Subsystem1816 {
             return stateName.toLowerCase();
         }
     }
-    
 }

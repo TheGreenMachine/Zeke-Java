@@ -34,5 +34,4 @@ public class GamepadDriveRotationCommand extends Command {
     protected void interrupted() {
         end();
     }
-
 }

@@ -1,4 +1,3 @@
-
 package com.edinarobotics.zeke;
 
 import com.edinarobotics.utils.gamepad.FilteredGamepad;
@@ -9,12 +8,12 @@ import com.edinarobotics.zeke.subsystems.Collector.CollectorState;
 import com.edinarobotics.zeke.subsystems.Collector.CollectorWheelState;
 import com.edinarobotics.zeke.subsystems.Shooter;
 import java.util.Vector;
+
 /**
  * Controls handles creating the {@link Gamepad} objects used to control the
  * robot as well as binding the proper Commands to button actions.
  */
 public class Controls {
-
     private static Controls instance;
     public final Gamepad gamepad1;
     public final Gamepad gamepad2;

@@ -21,7 +21,6 @@ public class SetDrivetrainStrafeCommand extends Command{
     }
 
     protected void execute() {
-        
     }
 
     protected boolean isFinished() {
@@ -29,12 +28,8 @@ public class SetDrivetrainStrafeCommand extends Command{
     }
 
     protected void end() {
-        
     }
 
     protected void interrupted() {
-        
     }
-    
-    
 }

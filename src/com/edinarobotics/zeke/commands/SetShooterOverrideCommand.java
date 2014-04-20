@@ -5,7 +5,6 @@ import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SetShooterOverrideCommand extends Command {
-
     private boolean shouldOverride;
     private Shooter shooter;
     
@@ -31,5 +30,4 @@ public class SetShooterOverrideCommand extends Command {
 
     protected void interrupted() {
     }
-    
 }
