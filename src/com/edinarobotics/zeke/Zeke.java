@@ -52,7 +52,7 @@ public class Zeke extends IterativeRobot {
         
         Controls.getInstance(); //Create all robot controls.
         Components.getInstance(); //Create all robot subsystems.
-        autonomousCommand = new AutonomousCommand();
+        autonomousCommand = new AutonomousCommand(false);
         statusTable = NetworkTable.getTable("status");
         shooter = Components.getInstance().shooter;
         drivetrain = Components.getInstance().drivetrain;
