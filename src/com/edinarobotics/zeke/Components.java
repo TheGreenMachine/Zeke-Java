@@ -5,6 +5,7 @@ import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.subsystems.Shooter;
+import com.edinarobotics.zeke.vision.VisionServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -28,6 +29,9 @@ public class Components {
     
     // Compressor
     public final Compressor compressor;
+    
+    // Vision Server
+    public final VisionServer visionServer;
     
     // Analog Inputs
         private static final int ULTRASONIC_SENSOR = 4;
@@ -98,6 +102,7 @@ public class Components {
         collector = new Collector(COLLECTOR_FRONT_TALON, COLLECTOR_BACK_TALON, 
                     COLLECTOR_DOUBLESOLENOID_FORWARD, COLLECTOR_DOUBLESOLENOID_REVERSE,
                     COLLECTOR_DOUBLESOLENOID_VALVE_ON, COLLECTOR_DOUBLESOLENOID_VALVE_OFF);
+        visionServer = VisionServer.getInstance();
         compressor = new Compressor(COMPRESSOR_PRESSURE_SWITCH, COMPRESSOR_RELAY);
         compressor.start();
     }

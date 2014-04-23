@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 public class Zeke extends IterativeRobot {
     private Logger zekeLogger;
     private Command autonomousCommand;
+    private final int VISION_PORT = 1180;
     
     private NetworkTable statusTable;
     private DriverStationLCD driverStationLCD = DriverStationLCD.getInstance();
@@ -52,7 +53,7 @@ public class Zeke extends IterativeRobot {
         
         Controls.getInstance(); //Create all robot controls.
         Components.getInstance(); //Create all robot subsystems.
-        autonomousCommand = new AutonomousCommand(false);
+        autonomousCommand = new AutonomousCommand();
         statusTable = NetworkTable.getTable("status");
         shooter = Components.getInstance().shooter;
         drivetrain = Components.getInstance().drivetrain;
