@@ -24,9 +24,11 @@ public class VisionServer implements Runnable {
     
     private int port;
     private boolean shouldListen = true;
+    private boolean shouldCount = false;
     private boolean isGoalHot = false;
     
-    double lastHeartbeatTime = -1.0;
+    private double lastHeartbeatTime = -1.0;
+    private int hotGoalCount = 0;
     
     private VisionServer() {
         this.port = 1180; // Default port
@@ -48,11 +50,40 @@ public class VisionServer implements Runnable {
     }
     
     public void stop() {
+        stopSamplingCounts();
         shouldListen = false;
     }
     
     public void reset() {
         isGoalHot = false;
+    }
+    
+    public boolean hasClientConnection() {
+        return lastHeartbeatTime > 0 && (Timer.getFPGATimestamp() - lastHeartbeatTime) < 3.0;
+    }
+    
+    private void updateCounts() {
+        if(shouldCount) {
+            hotGoalCount++;
+        }
+    }
+
+    public void startSamplingCounts() {
+        shouldCount = true;
+    }
+
+    public void stopSamplingCounts() {
+        shouldCount = false;
+    }
+    
+    /**
+     * Returns the number of times a hot goal was counted, which increases every
+     * 50 ms when a signal is being received. Thus, a count of 20 implies
+     * 20*50 = 1000 ms (1 second).
+     * @return The hot goal count.
+     */
+    public int getHotGoalCount() {
+        return hotGoalCount;
     }
     
     public void run() {
@@ -99,7 +130,7 @@ public class VisionServer implements Runnable {
         public void run() {
             try {
                 InputStream inputStream = socket.openInputStream();
-                byte[] b = new byte[1024];
+                byte[] b = new byte[5];
                 double lastHeartbeat = Timer.getFPGATimestamp();
                 VisionServer.this.lastHeartbeatTime = lastHeartbeat;
                 
@@ -108,8 +139,10 @@ public class VisionServer implements Runnable {
                         int inputData = inputStream.read(b);
                         for (int i = 0; i < inputData; ++i) {
                             byte reading = b[i];
-                            boolean status = (reading & (1 << 1)) > 0;
+                            boolean status = (reading << 0) > 0;
                             VisionServer.this.isGoalHot = status;
+                            if(status)
+                                VisionServer.this.updateCounts();
                         }
                         lastHeartbeat = Timer.getFPGATimestamp();
                         VisionServer.this.lastHeartbeatTime = lastHeartbeat;
