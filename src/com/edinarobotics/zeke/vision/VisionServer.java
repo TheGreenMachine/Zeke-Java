@@ -56,6 +56,7 @@ public class VisionServer implements Runnable {
     
     public void reset() {
         isGoalHot = false;
+        hotGoalCount = 0;
     }
     
     public boolean hasClientConnection() {

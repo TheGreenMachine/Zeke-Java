@@ -53,6 +53,7 @@ public class WaitForVisionCommand extends Command {
 
     protected void end() {
         visionServer.stop();
+        visionServer.reset();
     }
 
     protected void interrupted() {
