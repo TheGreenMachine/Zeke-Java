@@ -36,7 +36,7 @@ public class VisionReadingThread extends Thread {
                 int inputData = inputStream.read(readBytes);
                 for (int i = 0; i < inputData; i++) {
                     byte reading = readBytes[i];
-                    boolean status = (reading << 0) > 0; // WAT??????
+                    boolean status = reading != 0;
                     this.server.reportHotGoal(status);
                 }
                 lastHeartbeat = Timer.getFPGATimestamp();
