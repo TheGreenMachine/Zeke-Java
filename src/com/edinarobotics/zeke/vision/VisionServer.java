@@ -10,11 +10,13 @@ public class VisionServer {
     private Logger logger;
     private VisionConnectThread connThread;
     private int counts;
+    private boolean requireSequential;
 
     private VisionServer() {
         this.port = 1180;
         this.logger = LogSystem.getLogger("zeke.vision");
         counts = 0;
+        requireSequential = false;
     }
 
     public void setPort(int port) {
@@ -27,6 +29,10 @@ public class VisionServer {
             instance = new VisionServer();
         }
         return instance;
+    }
+    
+    public void setRequireSequential(boolean requireSequential){
+        this.requireSequential = requireSequential;
     }
 
     public void start() {
@@ -63,6 +69,9 @@ public class VisionServer {
     }
 
     public void reportHotGoal(boolean isHot) {
+        if(requireSequential && !isHot){
+            resetCounts();
+        }
         if (isHot) {
             incrementCount();
         }
