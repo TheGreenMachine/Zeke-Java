@@ -33,6 +33,8 @@ public class Controls {
         gamepad1.dPadLeft().whenReleased(new SetDrivetrainRotationCommand(0.0));
         gamepad1.dPadRight().whileHeld(new SetDrivetrainRotationCommand(0.2));
         gamepad1.dPadRight().whenReleased(new SetDrivetrainRotationCommand(0.0));
+        gamepad1.rightTrigger().whenPressed(new GamepadDriveFlipCommand(true));
+        gamepad1.rightTrigger().whenReleased(new GamepadDriveFlipCommand(false));
         
         Vector shootGamepadFilters = new Vector();
         driveGamepadFilters.addElement(new DeadzoneFilter(0.1));

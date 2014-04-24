@@ -9,11 +9,13 @@ import com.edinarobotics.zeke.Components;
 public class GamepadDriveStrafeCommand extends Command {
     private Gamepad gamepad;
     private DrivetrainStrafe drivetrainStrafe;
+    private boolean flipped;
     
     public GamepadDriveStrafeCommand(Gamepad gamepad) {
         super("GamepadDriveStrafe");
         this.gamepad = gamepad;
         this.drivetrainStrafe = Components.getInstance().drivetrainStrafe;
+        flipped = false;
         requires(drivetrainStrafe);
     }
 
@@ -23,7 +25,12 @@ public class GamepadDriveStrafeCommand extends Command {
     protected void execute() {
         double magnitude = gamepad.getGamepadAxisState().getLeftMagnitude();
         double direction = wpilibAngleCorrection(gamepad.getGamepadAxisState().getLeftDirection());
-        drivetrainStrafe.setMecanumPolarStrafe(magnitude, direction);
+        double flipValue = (flipped ? 180.0 : 0.0);
+        drivetrainStrafe.setMecanumPolarStrafe(magnitude, direction + flipValue);
+    }
+    
+    public void setFlipped(boolean flip){
+        this.flipped = flip;
     }
 
     protected boolean isFinished() {
