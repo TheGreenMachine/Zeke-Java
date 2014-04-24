@@ -40,20 +40,20 @@ public class WaitForVisionCommand extends Command {
     }
     
     protected void initialize() {
+        visionServer.resetCounts();
         visionServer.start();
-        visionServer.startSamplingCounts();
     }
 
     protected void execute() {
     }
 
     protected boolean isFinished() {
-        return visionServer.getHotGoalCount() > hotGoalCounts || isTimedOut();
+        return visionServer.getCount()> hotGoalCounts || isTimedOut();
     }
 
     protected void end() {
         visionServer.stop();
-        visionServer.reset();
+        visionServer.resetCounts();
     }
 
     protected void interrupted() {
