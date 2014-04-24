@@ -1,5 +1,6 @@
 package com.edinarobotics.zeke.vision;
 
+import com.edinarobotics.utils.log.Level;
 import edu.wpi.first.wpilibj.Timer;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,21 +30,24 @@ public class VisionReadingThread extends Thread {
             byte[] readBytes = new byte[5];
             double lastHeartbeat = Timer.getFPGATimestamp();
             while (!stop) {
-                if (Timer.getFPGATimestamp() < lastHeartbeat + TIMEOUT) {
-                    requestStop();
-                    break;
+                try {
+                    if (Timer.getFPGATimestamp() < lastHeartbeat + TIMEOUT) {
+                        requestStop();
+                        break;
+                    }
+                    int inputData = inputStream.read(readBytes);
+                    for (int i = 0; i < inputData; i++) {
+                        byte reading = readBytes[i];
+                        boolean status = reading != 0;
+                        System.out.println(">>>"+(status?"HOT HOT HOT":"COLD COLD COLD"));
+                        this.server.reportHotGoal(status);
+                    }
+                    lastHeartbeat = Timer.getFPGATimestamp();
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                int inputData = inputStream.read(readBytes);
-                for (int i = 0; i < inputData; i++) {
-                    byte reading = readBytes[i];
-                    boolean status = reading != 0;
-                    this.server.reportHotGoal(status);
-                }
-                lastHeartbeat = Timer.getFPGATimestamp();
-                Thread.sleep(50);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {

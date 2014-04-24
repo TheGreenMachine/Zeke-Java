@@ -4,6 +4,7 @@ import com.edinarobotics.utils.log.Level;
 import com.edinarobotics.utils.log.LogSystem;
 import com.edinarobotics.utils.log.Logger;
 import java.io.IOException;
+import javax.microedition.io.Connector;
 import javax.microedition.io.ServerSocketConnection;
 import javax.microedition.io.SocketConnection;
 
@@ -40,17 +41,21 @@ public class VisionConnectThread extends Thread {
     public void run() {
         ServerSocketConnection serverSocket = null;
         try {
+            serverSocket = (ServerSocketConnection) Connector.open("serversocket:///:"+port);
             while (!stop) {
-                if (currentReadingThread != null && currentReadingThread.isAlive()) {
-                    currentReadingThread.join();
+                try {
+                    if (currentReadingThread != null && currentReadingThread.isAlive()) {
+                        currentReadingThread.join();
+                    }
+                    SocketConnection connection = (SocketConnection) serverSocket.acceptAndOpen();
+                    currentReadingThread = new VisionReadingThread(connection, server);
+                    currentReadingThread.start();
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    logger.log(Level.INFO, "Vision connect thread interrupted.");
+                    e.printStackTrace();
                 }
-                SocketConnection connection = (SocketConnection) serverSocket.acceptAndOpen();
-                currentReadingThread = new VisionReadingThread(connection, server);
-                currentReadingThread.start();
-                Thread.sleep(100);
             }
-        } catch (InterruptedException ex) {
-            logger.log(Level.INFO, "Connect thread interrupted.");
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Failed to receive new connections.");
             e.printStackTrace();
