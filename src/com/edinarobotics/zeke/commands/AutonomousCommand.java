@@ -9,6 +9,7 @@ public class AutonomousCommand extends CommandGroup {
     
     public AutonomousCommand() {
         if(true) {
+            this.addSequential(new AutonomousMobilityOnlyCommand(5.0, 0.25, 4.0));
             this.addSequential(new DriveXDistanceCommandNoPID(DRIVE_DISTANCE_THRESHOLD, 0.25, true));
             this.addSequential(new ShootingSequenceCommand(true));
 //            this.addSequential(new LowerShooterAfterWaitCommand());
