@@ -52,7 +52,7 @@ public class Zeke extends IterativeRobot {
         
         Controls.getInstance(); //Create all robot controls.
         Components.getInstance(); //Create all robot subsystems.
-        autonomousCommand = new AutonomousCommand();
+        prepareAutonomousCommand();
         statusTable = NetworkTable.getTable("status");
         shooter = Components.getInstance().shooter;
         drivetrain = Components.getInstance().drivetrain;
@@ -63,6 +63,13 @@ public class Zeke extends IterativeRobot {
     public void disabledInit() {
         stop();
         zekeLogger.log(Level.INFO, "Disabled the robot.");
+    }
+    
+    public void prepareAutonomousCommand(){
+        if(autonomousCommand != null){
+            autonomousCommand.cancel();
+        }
+        autonomousCommand = new AutonomousCommand();
     }
     
     public void disabledPeriodic() {
@@ -77,6 +84,7 @@ public class Zeke extends IterativeRobot {
         DrivetrainStrafe drivetrainStrafe = Components.getInstance().drivetrainStrafe;
         drivetrainStrafe.setDefaultCommand(new MaintainStateCommand(drivetrainStrafe));
         
+        prepareAutonomousCommand();
         autonomousCommand.start();
         zekeLogger.log(Level.INFO, "Initialized autonomous.");
     }
