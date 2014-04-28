@@ -35,8 +35,8 @@ public class Controls {
         gamepad1.dPadRight().whenReleased(new SetDrivetrainRotationCommand(0.0));
         
         Vector shootGamepadFilters = new Vector();
-        driveGamepadFilters.addElement(new DeadzoneFilter(0.1));
-        driveGamepadFilters.addElement(new PowerFilter(2));
+        shootGamepadFilters.addElement(new DeadzoneFilter(0.1));
+        shootGamepadFilters.addElement(new PowerFilter(2));
         GamepadFilterSet shootGamepadFilterSet = new GamepadFilterSet(shootGamepadFilters);
         gamepad2 = new FilteredGamepad(2, shootGamepadFilterSet);
         
