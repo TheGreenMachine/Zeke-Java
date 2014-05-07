@@ -1,6 +1,5 @@
 package com.edinarobotics.zeke.commands;
 
-import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutonomousCommand extends CommandGroup {
@@ -21,7 +20,7 @@ public class AutonomousCommand extends CommandGroup {
         } else {
             this.addSequential(new WaitForCollectorUndeployedCommand());
             this.addParallel(new DriveXDistanceCommandNoPID(DRIVE_DISTANCE_THRESHOLD, 0.25, true));
-            this.addSequential(new LowerShooterToHeightCommand(Shooter.FIRING_HEIGHT));
+            this.addSequential(new LowerShooterCommand());
         }
     }
 }

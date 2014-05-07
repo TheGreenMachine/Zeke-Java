@@ -129,8 +129,8 @@ public class Zeke extends IterativeRobot {
     public void outputData() {
         statusTable.putBoolean("collectorout", collector.getState().getDeployed());
         statusTable.putBoolean("shooterholding", shooter.getWinchState().isPistonEngaged());
-        statusTable.putNumber("shooterheight", shooter.getStringPot());
-        statusTable.putNumber("maxshootheight", Shooter.FIRING_HEIGHT);
+        statusTable.putNumber("shooterheight", 0);
+        statusTable.putNumber("maxshootheight", 0);
         statusTable.putNumber("ultrasounddistance", drivetrain.getUltrasonicSensor().getDistance());
         statusTable.putNumber("maxdistance", Shooter.MAX_SHOOT_DISTANCE);
         statusTable.putNumber("mindistance", Shooter.MIN_SHOOT_DISTANCE);
@@ -139,10 +139,8 @@ public class Zeke extends IterativeRobot {
         double distance = drivetrain.getUltrasonicSensor().getDistance();
         boolean distanceStatus = (distance > 17.5 && distance < 18.1) || (distance > 9.4 && distance < 10.0);
         driverStationLCD.println(DriverStationLCD.Line.kUser2, 1, "Distance: "+(distanceStatus ? "GOOD DISTANCE!!":"Bad"));
-        boolean shootHeightStatus = shooter.getStringPot() < 3.0;
-        driverStationLCD.println(DriverStationLCD.Line.kUser3, 1, "Shooter Height: "+(shootHeightStatus ? "Good Height":"Bad"));
-        driverStationLCD.println(DriverStationLCD.Line.kUser4, 1, "Shoot Status: "+(shootHeightStatus&&distanceStatus ? "GOOD TO FIRE!!!!!!!":"not good"));
-        if(shootHeightStatus && distanceStatus){
+        driverStationLCD.println(DriverStationLCD.Line.kUser4, 1, "Shoot Status: "+(distanceStatus ? "GOOD TO FIRE!!!!!!!":"not good"));
+        if(distanceStatus){
             driverStationLCD.println(DriverStationLCD.Line.kUser5, 1, "!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!GO!!");
             driverStationLCD.println(DriverStationLCD.Line.kUser6, 1, "**************************************************************");
         }

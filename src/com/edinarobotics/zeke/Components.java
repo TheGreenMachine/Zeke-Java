@@ -31,7 +31,6 @@ public class Components {
     
     // Analog Inputs
         private static final int ULTRASONIC_SENSOR = 4;
-        private static final int SHOOTER_POT_PORT = 3;
     // END Analog Inputs
     
     // Digital IO Constants
@@ -94,7 +93,7 @@ public class Components {
         drivetrainRotation = new DrivetrainRotation(drivetrain);
         shooter = new Shooter(WINCH_TALON, SHOOTER_DOUBLESOLENOID_FORWARD,
                 SHOOTER_DOUBLESOLENOID_REVERSE, PUSHER_DOUBLESOLENOID_FORWARD,
-                PUSHER_DOUBLESOLENOID_REVERSE, SHOOTER_POT_PORT, SHOOTER_LOWER_LIMIT);
+                PUSHER_DOUBLESOLENOID_REVERSE, SHOOTER_LOWER_LIMIT);
         collector = new Collector(COLLECTOR_FRONT_TALON, COLLECTOR_BACK_TALON, 
                     COLLECTOR_DOUBLESOLENOID_FORWARD, COLLECTOR_DOUBLESOLENOID_REVERSE,
                     COLLECTOR_DOUBLESOLENOID_VALVE_ON, COLLECTOR_DOUBLESOLENOID_VALVE_OFF);

@@ -5,23 +5,17 @@ import com.edinarobotics.utils.log.LogSystem;
 import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
 import com.edinarobotics.zeke.Components;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 
 public class Shooter extends Subsystem1816 {
-    public static final double FIRING_HEIGHT = Shooter.MIN_SAFE_HEIGHT;
     public static final double MAX_SHOOT_DISTANCE = 18.0; //In feet
     public static final double MIN_SHOOT_DISTANCE = 12.0; //In feet
-    private static final double SCALE = 6.317;
-    private static final double OFFSET = -1.579;
-    private static final double MIN_SAFE_HEIGHT = 0.0;
     
     private Talon winch;
     private DoubleSolenoid winchSolenoidRelease;
     private DoubleSolenoid pusher;
-    private AnalogPotentiometer shooterPot;
     private DigitalInput lowerLimitSwitch;
     private WinchState winchState, lastState;
     
@@ -36,11 +30,10 @@ public class Shooter extends Subsystem1816 {
     private Logger log = LogSystem.getLogger("zeke.shooter");
 
     public Shooter(int winchPort, int winchSolenoidForward, int winchSolenoidReverse,
-            int pusherSolenoidForward, int pusherSolenoidReverse, int shooterPotPort, int limitSwitchPort) {
+            int pusherSolenoidForward, int pusherSolenoidReverse, int limitSwitchPort) {
         winch = new Talon(winchPort);
         winchSolenoidRelease = new DoubleSolenoid(winchSolenoidForward, winchSolenoidReverse);
         pusher = new DoubleSolenoid(pusherSolenoidForward, pusherSolenoidReverse);
-        shooterPot = new AnalogPotentiometer(shooterPotPort, SCALE, OFFSET);
         lowerLimitSwitch = new DigitalInput(1, limitSwitchPort);
         winchState = WinchState.STOPPED;
         lastState = WinchState.STOPPED;
@@ -55,10 +48,6 @@ public class Shooter extends Subsystem1816 {
             log.log(Level.SEVERE, "Shooter.setWinchState got null.");
         }
         update();
-    }
-    
-    public double getStringPot() {
-        return shooterPot.get();
     }
     
     public WinchState getWinchState() {
@@ -84,8 +73,7 @@ public class Shooter extends Subsystem1816 {
     
     public void update() {
         // Winch motor
-        if((getStringPot() < MIN_SAFE_HEIGHT || getShooterLimitSwitch())
-                    && winchState.equals(WinchState.LOWERING)) {
+        if(getShooterLimitSwitch() && winchState.equals(WinchState.LOWERING)) {
             winchState = WinchState.STOPPED;
         }
         else if(!shouldOverride && (Components.getInstance().collector.getDeployed()

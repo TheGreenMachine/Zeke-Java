@@ -4,15 +4,11 @@ import com.edinarobotics.zeke.Components;
 import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class LowerShooterToHeightCommand extends Command {
-    private double targetHeight;
-    private double currentHeight;
+public class LowerShooterCommand extends Command {
     private Shooter shooter;
 
-    public LowerShooterToHeightCommand(double targetHeight) {
+    public LowerShooterCommand() {
         shooter = Components.getInstance().shooter;
-        this.targetHeight = targetHeight;
-        this.currentHeight = shooter.getStringPot();
         requires(shooter);
     }
 
@@ -21,14 +17,13 @@ public class LowerShooterToHeightCommand extends Command {
     }
 
     protected void execute() {
-	this.currentHeight = shooter.getStringPot();
-        if (currentHeight > targetHeight && !shooter.getShooterLimitSwitch()) {
+        if (!shooter.getShooterLimitSwitch()) {
             shooter.setWinchState(Shooter.WinchState.LOWERING);
 	}
     }
 
     protected boolean isFinished() {
-        if(currentHeight <= targetHeight || shooter.getShooterLimitSwitch()) {
+        if(shooter.getShooterLimitSwitch()) {
             return true;
         }
         return false;
