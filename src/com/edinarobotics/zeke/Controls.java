@@ -25,10 +25,10 @@ public class Controls {
         GamepadFilterSet driveGamepadFilterSet = new GamepadFilterSet(driveGamepadFilters);
         gamepad1 = new FilteredGamepad(1, driveGamepadFilterSet);
         
-        gamepad1.dPadDown().whileHeld(new SetDrivetrainStrafeCommand(0.15, 270.0));
-        gamepad1.dPadDown().whenReleased(new SetDrivetrainStrafeCommand(0.0, 90.0));
-        gamepad1.dPadUp().whileHeld(new SetDrivetrainStrafeCommand(0.15, 90.0));
-        gamepad1.dPadUp().whenReleased(new SetDrivetrainStrafeCommand(0.0, 90.0));
+        gamepad1.dPadDown().whileHeld(new SetDrivetrainStrafeCommand(0.15, 180.0));
+        gamepad1.dPadDown().whenReleased(new SetDrivetrainStrafeCommand(0.0, 0.0));
+        gamepad1.dPadUp().whileHeld(new SetDrivetrainStrafeCommand(0.15, 0.0));
+        gamepad1.dPadUp().whenReleased(new SetDrivetrainStrafeCommand(0.0, 0.0));
         gamepad1.dPadLeft().whileHeld(new SetDrivetrainRotationCommand(-0.2));
         gamepad1.dPadLeft().whenReleased(new SetDrivetrainRotationCommand(0.0));
         gamepad1.dPadRight().whileHeld(new SetDrivetrainRotationCommand(0.2));

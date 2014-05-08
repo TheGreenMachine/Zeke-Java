@@ -8,6 +8,7 @@ public class Drivetrain implements Updatable {
     private RobotDrive robotDrive;
     private double magnitude, direction, rotation;
     private UltrasonicSensor ultrasonicSensor;
+    private static final boolean IS_PRACTICEBOT = true;
     
     public static final double ULTRASONIC_SCALE = 6.799; //Value is in feet/volt
     
@@ -46,8 +47,27 @@ public class Drivetrain implements Updatable {
         return ultrasonicSensor;
     }
     
+    public static double wpilibAngleCorrection(double normalAngle){
+        //Converts normal angle format to the weird WPILib measurement
+        double convertedAngle = (normalAngle - 90.0) * -1.0;
+        if(convertedAngle > 180.0){
+            return convertedAngle - 360.0;
+        }
+        else if(convertedAngle < -180.0){
+            return convertedAngle + 360.0;
+        }
+        return convertedAngle;
+    }
+    
     public void update() {
-        robotDrive.mecanumDrive_Polar(magnitude, direction, rotation);
+        double workingDirection;
+        if(IS_PRACTICEBOT) {
+            workingDirection = direction;
+        }
+        else {
+            workingDirection = wpilibAngleCorrection(direction);
+        }
+        robotDrive.mecanumDrive_Polar(magnitude, workingDirection, rotation);
     }
 }
 
