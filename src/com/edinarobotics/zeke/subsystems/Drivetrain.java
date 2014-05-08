@@ -2,13 +2,13 @@ package com.edinarobotics.zeke.subsystems;
 
 import com.edinarobotics.utils.common.Updatable;
 import com.edinarobotics.utils.sensors.UltrasonicSensor;
+import com.edinarobotics.zeke.Components;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 public class Drivetrain implements Updatable {
     private RobotDrive robotDrive;
     private double magnitude, direction, rotation;
     private UltrasonicSensor ultrasonicSensor;
-    private static final boolean IS_PRACTICEBOT = true;
     
     public static final double ULTRASONIC_SCALE = 6.799; //Value is in feet/volt
     
@@ -61,7 +61,7 @@ public class Drivetrain implements Updatable {
     
     public void update() {
         double workingDirection;
-        if(IS_PRACTICEBOT) {
+        if(Components.IS_PRACTICEBOT) {
             workingDirection = direction;
         }
         else {
