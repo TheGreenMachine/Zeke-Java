@@ -12,10 +12,12 @@ public class AutonomousCommand extends CommandGroup {
             this.addSequential(new ShootingSequenceCommand(false));
             this.addParallel(new LowerShooterAfterWaitCommand(1.5));
             this.addSequential(new WaitCommand(0.5));
-            this.addSequential(new DriveXTimeCommand(2.0, 0.35));
+            this.addSequential(new DriveXTimeCommand(3.5, 0.35));
         } else {
-            this.addSequential(new DriveXTimeCommand(2.0, 0.35));
-            this.addSequential(new ShootingSequenceCommand(true));
+            this.addSequential(new ShootingSequenceCommand(false));
+            this.addParallel(new LowerShooterAfterWaitCommand(1.5));
+            this.addSequential(new WaitCommand(0.5));
+            this.addSequential(new DriveXTimeCommand(3.5, 0.35));
         }
     }
 }
