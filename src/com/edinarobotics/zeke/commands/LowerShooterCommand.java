@@ -5,6 +5,7 @@ import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class LowerShooterCommand extends Command {
+
     private Shooter shooter;
 
     public LowerShooterCommand() {
@@ -13,20 +14,17 @@ public class LowerShooterCommand extends Command {
     }
 
     protected void initialize() {
-        
+
     }
 
     protected void execute() {
         if (!shooter.getShooterLimitSwitch()) {
             shooter.setWinchState(Shooter.WinchState.LOWERING);
-	}
+        }
     }
 
     protected boolean isFinished() {
-        if(shooter.getShooterLimitSwitch()) {
-            return true;
-        }
-        return false;
+        return shooter.getShooterLimitSwitch();
     }
 
     protected void end() {
