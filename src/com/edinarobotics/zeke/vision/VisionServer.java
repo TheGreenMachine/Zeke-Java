@@ -38,6 +38,7 @@ public class VisionServer {
     public void start() {
         stop();
         connThread = new VisionConnectThread(this.port, this);
+        connThread.start();
     }
 
     public void stop() {
