@@ -1,5 +1,8 @@
 package com.edinarobotics.zeke;
 
+import com.edinarobotics.utils.log.Level;
+import com.edinarobotics.utils.log.LogSystem;
+import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.zeke.subsystems.Collector;
 import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
@@ -16,6 +19,7 @@ import edu.wpi.first.wpilibj.Compressor;
  */
 public class Components {
     private static Components instance;
+    private static final Logger logger = LogSystem.getLogger("zeke.components");
     
     public static final boolean IS_PRACTICEBOT = true; //Practice bot switch
     private RobotComponentsMapping mapping;
@@ -41,9 +45,11 @@ public class Components {
     private Components(){
         if(IS_PRACTICEBOT){
             mapping = new PracticeRobotComponentsMapping();
+            logger.log(Level.INFO, "Started in practice bot mode.");
         }
         else{
             mapping = new RobotComponentsMapping();
+            logger.log(Level.INFO, "Started in competition bot mode.");
         }
         drivetrain = new Drivetrain(mapping.FRONT_LEFT_DRIVE, mapping.REAR_LEFT_DRIVE,
                 mapping.FRONT_RIGHT_DRIVE, mapping.REAR_RIGHT_DRIVE, mapping.ULTRASONIC_SENSOR);
