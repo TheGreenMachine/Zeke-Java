@@ -15,6 +15,7 @@ import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.log.filters.MinimumLevelFilter;
 import com.edinarobotics.utils.log.handlers.PrintHandler;
 import com.edinarobotics.zeke.commands.AutonomousCommand;
+import com.edinarobotics.zeke.commands.AutonomousVisionCommand;
 import com.edinarobotics.zeke.commands.GamepadDriveRotationCommand;
 import com.edinarobotics.zeke.commands.GamepadDriveStrafeCommand;
 import com.edinarobotics.zeke.commands.LowerShooterAfterWaitCommand;
@@ -70,8 +71,17 @@ public class Zeke extends IterativeRobot {
         if(autonomousCommand != null){
             autonomousCommand.cancel();
         }
+        boolean useVision = DriverStation.getInstance().getDigitalIn(2);
         boolean twoBallAuto = DriverStation.getInstance().getDigitalIn(1);
-        autonomousCommand = new AutonomousCommand(twoBallAuto);
+        if(useVision){
+            autonomousCommand = new AutonomousVisionCommand();
+        }
+        else if(twoBallAuto){
+            autonomousCommand = new AutonomousCommand(true);
+        }
+        else{
+            autonomousCommand = new AutonomousCommand(false);
+        }
     }
     
     public void disabledPeriodic() {
