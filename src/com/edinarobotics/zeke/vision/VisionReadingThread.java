@@ -31,15 +31,17 @@ public class VisionReadingThread extends Thread {
             double lastHeartbeat = Timer.getFPGATimestamp();
             while (!stop) {
                 try {
-                    if (Timer.getFPGATimestamp() < lastHeartbeat + TIMEOUT) {
+                    if (Timer.getFPGATimestamp() > lastHeartbeat + TIMEOUT) {
                         requestStop();
-                        break;
+                        continue;
                     }
                     int inputData = inputStream.read(readBytes);
+                    if(inputData == -1){
+                        requestStop();
+                    }
                     for (int i = 0; i < inputData; i++) {
                         byte reading = readBytes[i];
                         boolean status = reading != 0;
-                        System.out.println(">>>"+(status?"HOT HOT HOT":"COLD COLD COLD"));
                         this.server.reportHotGoal(status);
                     }
                     lastHeartbeat = Timer.getFPGATimestamp();
