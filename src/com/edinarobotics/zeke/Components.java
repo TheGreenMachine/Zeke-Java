@@ -5,6 +5,7 @@ import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.subsystems.Shooter;
+import com.edinarobotics.zeke.vision.VisionServer;
 import edu.wpi.first.wpilibj.Compressor;
 
 /**
@@ -26,6 +27,9 @@ public class Components {
     public final Shooter shooter;
     public final Collector collector;
     // END Subsystems
+    
+    //Vision Server
+    public final VisionServer visionServer;
     
     // Compressor
     public final Compressor compressor;
@@ -53,6 +57,8 @@ public class Components {
                     mapping.COLLECTOR_DOUBLESOLENOID_VALVE_ON, mapping.COLLECTOR_DOUBLESOLENOID_VALVE_OFF);
         compressor = new Compressor(mapping.COMPRESSOR_PRESSURE_SWITCH, mapping.COMPRESSOR_RELAY);
         compressor.start();
+        visionServer = VisionServer.getInstance();
+        visionServer.setPort(mapping.VISION_SERVER_PORT);
     }
     
     /**

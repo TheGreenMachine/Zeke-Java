@@ -47,4 +47,7 @@ public class RobotComponentsMapping {
         // Compressor
         protected final int COMPRESSOR_RELAY = 1;
     // END Relay constants
+        
+    // Vision Server Port
+        protected final int VISION_SERVER_PORT = 1180;
 }
