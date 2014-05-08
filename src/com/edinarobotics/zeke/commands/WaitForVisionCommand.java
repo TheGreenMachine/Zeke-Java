@@ -41,7 +41,6 @@ public class WaitForVisionCommand extends Command {
     
     protected void initialize() {
         visionServer.resetCounts();
-        visionServer.start();
     }
 
     protected void execute() {
@@ -52,7 +51,6 @@ public class WaitForVisionCommand extends Command {
     }
 
     protected void end() {
-        visionServer.stop();
         visionServer.resetCounts();
     }
 
