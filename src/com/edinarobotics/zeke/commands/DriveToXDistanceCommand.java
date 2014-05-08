@@ -6,7 +6,7 @@ import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveXDistanceCommandNoPID extends Command {
+public class DriveToXDistanceCommand extends Command {
     private Drivetrain drivetrain;
     private DrivetrainStrafe drivetrainStrafe;
     private DrivetrainRotation drivetrainRotation;
@@ -14,7 +14,7 @@ public class DriveXDistanceCommandNoPID extends Command {
     private double speed;
     private boolean isForward;
     
-    public DriveXDistanceCommandNoPID(double distanceThreshold, double speed, boolean isForward) {
+    public DriveToXDistanceCommand(double distanceThreshold, double speed, boolean isForward) {
         super("DriveXDistanceCommand");
         this.drivetrain = Components.getInstance().drivetrain;
         this.drivetrainStrafe = Components.getInstance().drivetrainStrafe;
@@ -27,12 +27,12 @@ public class DriveXDistanceCommandNoPID extends Command {
     }
     
     protected void initialize() {
-        drivetrainStrafe.setMecanumPolarStrafe(speed, isForward ? 90.0 : 270.0);
+        drivetrainStrafe.setMecanumPolarStrafe(speed, isForward ? 0.0 : 180.0);
         drivetrainRotation.setMecanumPolarRotate(0.0);
     }
 
     protected void execute() {
-        drivetrainStrafe.setMecanumPolarStrafe(speed, isForward ? 90.0 : 270.0);
+        drivetrainStrafe.setMecanumPolarStrafe(speed, isForward ? 0.0 : 180.0);
         drivetrainRotation.setMecanumPolarRotate(0.0);
     }
 
