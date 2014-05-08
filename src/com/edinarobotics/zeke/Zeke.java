@@ -23,6 +23,7 @@ import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.subsystems.Shooter;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -69,7 +70,8 @@ public class Zeke extends IterativeRobot {
         if(autonomousCommand != null){
             autonomousCommand.cancel();
         }
-        autonomousCommand = new AutonomousCommand();
+        boolean twoBallAuto = DriverStation.getInstance().getDigitalIn(1);
+        autonomousCommand = new AutonomousCommand(twoBallAuto);
     }
     
     public void disabledPeriodic() {
