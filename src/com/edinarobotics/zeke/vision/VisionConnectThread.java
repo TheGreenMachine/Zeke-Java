@@ -41,7 +41,7 @@ public class VisionConnectThread extends Thread {
     public void run() {
         ServerSocketConnection serverSocket = null;
         try {
-            serverSocket = (ServerSocketConnection) Connector.open("serversocket:///:"+port);
+            serverSocket = (ServerSocketConnection) Connector.open("socket://:"+port);
             while (!stop) {
                 try {
                     if (currentReadingThread != null && currentReadingThread.isAlive()) {
