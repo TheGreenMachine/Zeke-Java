@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 public class Zeke extends IterativeRobot {
     private Logger zekeLogger;
     private Command autonomousCommand;
+    private Command teleopLowerCommand;
     
     private NetworkTable statusTable;
     private DriverStationLCD driverStationLCD = DriverStationLCD.getInstance();
@@ -55,6 +56,7 @@ public class Zeke extends IterativeRobot {
         Controls.getInstance(); //Create all robot controls.
         Components.getInstance(); //Create all robot subsystems.
         prepareAutonomousCommand();
+        prepareTeleopLowerCommand();
         statusTable = NetworkTable.getTable("status");
         shooter = Components.getInstance().shooter;
         drivetrain = Components.getInstance().drivetrain;
@@ -84,6 +86,13 @@ public class Zeke extends IterativeRobot {
         }
     }
     
+    public void prepareTeleopLowerCommand(){
+        if(teleopLowerCommand != null){
+            teleopLowerCommand.cancel();
+        }
+        teleopLowerCommand = new LowerShooterAfterWaitCommand(1.5);
+    }
+    
     public void disabledPeriodic() {
         stop();
         outputData();
@@ -111,6 +120,7 @@ public class Zeke extends IterativeRobot {
 
     public void teleopInit() {
         autonomousCommand.cancel();
+        prepareTeleopLowerCommand();
         
         Gamepad gamepad1 = Controls.getInstance().gamepad1;
         Components.getInstance().drivetrainRotation
@@ -118,9 +128,9 @@ public class Zeke extends IterativeRobot {
         Components.getInstance().drivetrainStrafe
                 .setDefaultCommand(new GamepadDriveStrafeCommand(gamepad1));
         
-        Command teleopLowerShooterCommand = new LowerShooterAfterWaitCommand(1.5);
-        if(!Controls.getInstance().gamepad1.middleLeft().get()){
-            teleopLowerShooterCommand.start();
+        if(!Controls.getInstance().gamepad1.diamondUp().get() &&
+                !Controls.getInstance().gamepad2.diamondUp().get()){
+            teleopLowerCommand.start();
         }
         zekeLogger.log(Level.INFO, "Initialized teleop.");
     }
