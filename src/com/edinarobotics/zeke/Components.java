@@ -21,7 +21,7 @@ public class Components {
     private static Components instance;
     private static final Logger logger = LogSystem.getLogger("zeke.components");
     
-    public static final boolean IS_PRACTICEBOT = true; //Practice bot switch
+    public static final boolean IS_PRACTICEBOT = false; //Practice bot switch
     private RobotComponentsMapping mapping;
     
     // Subsystems
