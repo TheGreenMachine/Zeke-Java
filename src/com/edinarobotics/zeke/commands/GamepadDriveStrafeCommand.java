@@ -1,4 +1,3 @@
-
 package com.edinarobotics.zeke.commands;
 
 import edu.wpi.first.wpilibj.command.Command;

@@ -5,7 +5,6 @@ import com.edinarobotics.zeke.subsystems.Shooter;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class LowerShooterCommand extends Command {
-
     private Shooter shooter;
 
     public LowerShooterCommand() {
@@ -14,7 +13,6 @@ public class LowerShooterCommand extends Command {
     }
 
     protected void initialize() {
-
     }
 
     protected void execute() {

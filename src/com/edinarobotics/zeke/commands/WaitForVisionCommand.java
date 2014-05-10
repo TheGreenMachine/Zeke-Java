@@ -47,7 +47,7 @@ public class WaitForVisionCommand extends Command {
     }
 
     protected boolean isFinished() {
-        return visionServer.getCount()> hotGoalCounts || isTimedOut();
+        return visionServer.getCount() > hotGoalCounts || isTimedOut();
     }
 
     protected void end() {

@@ -4,10 +4,6 @@ import com.edinarobotics.zeke.Components;
 import com.edinarobotics.zeke.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- * @author GreenMachine
- */
 public class WaitForDistanceAboveCommand extends Command {
     private Drivetrain drivetrain;
     private double lowerDistance;

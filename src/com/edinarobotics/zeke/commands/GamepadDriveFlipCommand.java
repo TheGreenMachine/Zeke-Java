@@ -32,6 +32,4 @@ public class GamepadDriveFlipCommand extends Command {
 
     protected void interrupted() {
     }
-    
-    
 }

@@ -1,6 +1,5 @@
 package com.edinarobotics.zeke.vision;
 
-import com.edinarobotics.utils.log.Level;
 import edu.wpi.first.wpilibj.Timer;
 import java.io.IOException;
 import java.io.InputStream;
