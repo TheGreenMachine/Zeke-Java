@@ -1,23 +1,48 @@
 package com.edinarobotics.zeke.commands;
 
+import com.edinarobotics.zeke.Components;
 import com.edinarobotics.zeke.subsystems.Collector;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class RunCollectorCommand extends CommandGroup {
-    
-    public RunCollectorCommand(double time, boolean raiseWhenFinished) {
-        CommandGroup lowerAndRun = new CommandGroup();
-        lowerAndRun.addParallel(new SetCollectorCommand(Collector.CollectorState.DEPLOY,
-                Collector.CollectorWheelState.COLLECTING));
-        lowerAndRun.addParallel(new WaitCommand(time));
-        
-        this.addSequential(lowerAndRun);
-        this.addSequential(new SetCollectorCommand(Collector.CollectorWheelState.STOPPED));
-        if(raiseWhenFinished) {
-            this.addParallel(new SetCollectorCommand(Collector.CollectorState.RETRACT,
-                    Collector.CollectorWheelState.COLLECTING));
-            this.addSequential(new WaitCommand(2.0));
-        }
-    }
+import edu.wpi.first.wpilibj.command.Command;
+
+public class RunCollectorCommand extends Command {
+
+	private Collector collector;
+	private boolean active, forwards;
+	
+	public RunCollectorCommand(boolean active, boolean forwards) {
+		super("runcollectorcommand");
+		collector = Components.getInstance().collector;
+		this.active = active;
+		this.forwards = forwards;
+		requires(collector);
+	}
+	
+	@Override
+	protected void initialize() {
+		collector.setActive(active);
+		collector.setForwards(forwards);	
+		System.out.println("Initialized...");
+	}
+
+	@Override
+	protected void execute() {
+		
+	}
+
+	@Override
+	protected boolean isFinished() {
+		return true;
+	}
+
+	@Override
+	protected void end() {
+
+	}
+
+	@Override
+	protected void interrupted() {
+
+	}
+
 }

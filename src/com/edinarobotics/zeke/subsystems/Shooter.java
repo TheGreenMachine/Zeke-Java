@@ -1,137 +1,113 @@
 package com.edinarobotics.zeke.subsystems;
 
-import com.edinarobotics.utils.log.Level;
-import com.edinarobotics.utils.log.LogSystem;
-import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.utils.subsystems.Subsystem1816;
-import com.edinarobotics.zeke.Components;
+
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Shooter extends Subsystem1816 {
-    public static final double MAX_SHOOT_DISTANCE = 18.0; //In feet
-    public static final double MIN_SHOOT_DISTANCE = 12.0; //In feet
-    
-    private Talon winch;
-    private DoubleSolenoid winchSolenoidRelease;
-    private DoubleSolenoid pusher;
-    private DigitalInput lowerLimitSwitch;
-    private WinchState winchState, lastState;
-    
-    private boolean shouldOverride;
-    private boolean isPusherDeployed;
-   
-    private static final DoubleSolenoid.Value ENGAGED = DoubleSolenoid.Value.kReverse;
-    private static final DoubleSolenoid.Value DISENGAGED = DoubleSolenoid.Value.kForward;
-    private static final DoubleSolenoid.Value PUSHER_DEPLOY = DoubleSolenoid.Value.kForward;
-    private static final DoubleSolenoid.Value PUSHER_RETRACT = DoubleSolenoid.Value.kReverse;
-    
-    private Logger log = LogSystem.getLogger("zeke.shooter");
 
-    public Shooter(int winchPort, int winchSolenoidForward, int winchSolenoidReverse,
-            int pusherSolenoidForward, int pusherSolenoidReverse, int limitSwitchPort) {
-        winch = new Talon(winchPort);
-        winchSolenoidRelease = new DoubleSolenoid(winchSolenoidForward, winchSolenoidReverse);
-        pusher = new DoubleSolenoid(pusherSolenoidForward, pusherSolenoidReverse);
-        lowerLimitSwitch = new DigitalInput(1, limitSwitchPort);
-        winchState = WinchState.STOPPED;
-        lastState = WinchState.STOPPED;
-        shouldOverride = false;
-        isPusherDeployed = false;
-    }
-    
-    public void setWinchState(WinchState winchState) {
-        if(winchState != null) {
-            this.winchState = winchState;
-        } else {
-            log.log(Level.SEVERE, "Shooter.setWinchState got null.");
-        }
-        update();
-    }
-    
-    public WinchState getWinchState() {
-        return winchState;
-    }
-    
-    public boolean getShooterLimitSwitch() {
-        return lowerLimitSwitch.get();
-    }
-    
-    public void setOverride(boolean shouldOverride) {
-        this.shouldOverride = shouldOverride;
-    }
-     
-    public void setPusher(boolean deploy) {
-        isPusherDeployed = deploy;
-        update();
-    }
+	private CANTalon winch;
+	private DigitalInput limitSwitch;
 
-    public boolean getPusher() {
-        return isPusherDeployed;
-    }
-    
-    public void update() {
-        // Winch motor
-        if(getShooterLimitSwitch() && winchState.equals(WinchState.LOWERING)) {
-            winchState = WinchState.STOPPED;
-        }
-        else if(!shouldOverride && (Components.getInstance().collector.getDeployed()
-                && lastState.isPistonEngaged() && winchState.equals(WinchState.FREE))){
-            winchState = WinchState.STOPPED;
-        }
-        
-        //Pusher
-        if(!winchState.equals(WinchState.STOPPED) || !getShooterLimitSwitch()) {
-            isPusherDeployed = false;
-        }
-        pusher.set((isPusherDeployed ? PUSHER_DEPLOY : PUSHER_RETRACT));
-        
-        winch.set(winchState.getMotorSpeed());
-        lastState = winchState;
-        DoubleSolenoid.Value pistonState = (winchState.isPistonEngaged() ? ENGAGED : DISENGAGED);
-        winchSolenoidRelease.set(pistonState);
-    }
-    
-    public static final class WinchState {
-        public static final WinchState LOWERING = new WinchState((byte)0, true, 1.0, "lowering");
-        public static final WinchState STOPPED = new WinchState((byte)1, true, 0.0, "stopped");
-        public static final WinchState FREE = new WinchState((byte)2, false, 0.0, "free");
-        
-        private byte winchState;
-        private boolean isPistonEngaged;
-        private double motorSpeed;
-        private String stateName;
-        
-        private WinchState(byte winchState, boolean isPistonEngaged,
-                double motorSpeed, String stateName) {
-            this.winchState = winchState;
-            this.isPistonEngaged = isPistonEngaged;
-            this.motorSpeed = motorSpeed;
-            this.stateName = stateName;
-        }
-        
-        private byte getWinchState() {
-            return winchState;
-        }
+	private DoubleSolenoid shifter;
+	private ShifterState shifterState;
+	private boolean shifterActive = false;
+	
+	private WinchState winchState;
+	private double winchRate = 0.0;
+	private static final double WINCH_LOWERING = -0.6;
+	private static final double WINCH_FIRING = 0.5;
 
-        public boolean isPistonEngaged() {
-            return isPistonEngaged;
-        }
+	public Shooter(int winch, int limitSwitch, int pcModule,
+			int shifterForward, int shifterReverse) {
+		this.winch = new CANTalon(winch);
+		this.limitSwitch = new DigitalInput(limitSwitch);
+		
+		shifter = new DoubleSolenoid(pcModule, shifterForward, shifterReverse);
+		shifterState = ShifterState.RETRACTED;
+		shifter.set(Value.kReverse);
+	}
 
-        private double getMotorSpeed() {
-            return motorSpeed;
-        }
-        
-        public boolean equals(Object winchState) {
-            if(winchState instanceof WinchState) {
-                return ((WinchState)winchState).getWinchState() == this.getWinchState();
-            }
-            return false;
-        }
-        
-        public String toString() {
-            return stateName.toLowerCase();
-        }
-    }
+	@Override
+	public void update() {
+		if (getLimitSwitch()) {
+			if (winchState == WinchState.LOWERING) {
+				winchState = WinchState.STOPPED;
+				winchRate = 0.0;
+			}
+		}
+		
+		winch.set(winchRate);
+				
+		if (isShifterActive()) {
+			if (shifterState == ShifterState.EXTENDED) {
+				shifter.set(Value.kReverse);
+			} else if (shifterState == ShifterState.RETRACTED) {
+				shifter.set(Value.kForward);
+			}
+
+			shifterActive = false;
+		}		
+	}
+	
+	public void fireShooter() {
+		setWinchState(WinchState.FIRING);
+		System.out.println("Winch firing...");
+		
+		setShifterState(ShifterState.RETRACTED);
+		System.out.println("Shifter extended...");
+		
+		Timer.delay(0.1);
+		
+		setWinchState(WinchState.FREE);
+	}
+
+	public enum WinchState {
+		LOWERING, STOPPED, FIRING, FREE;
+	}
+	
+	public enum ShifterState {
+		EXTENDED, RETRACTED, VENT;
+	}
+
+	public void setWinchState(WinchState winchState) {
+		this.winchState = winchState;
+
+		if (winchState == WinchState.LOWERING) {
+			winchRate = WINCH_LOWERING;
+		} else if (winchState == WinchState.FIRING) {
+			winchRate = WINCH_FIRING;
+		} else {
+			winchRate = 0;
+		}
+		
+		update();		
+	}
+
+	public double getWinchRate() {
+		return winchRate;
+	}
+	
+	public void setShifterState(ShifterState shifterState) {
+		this.shifterState = shifterState;
+		shifterActive = true;
+		update();
+	}
+	
+	public boolean isShifterActive() {
+		return shifterActive;
+	}
+	
+	public boolean isShifterExtended() {
+		return shifter.get() == Value.kForward;
+	}
+
+	public boolean getLimitSwitch() {
+		return limitSwitch.get();
+	}
+
 }

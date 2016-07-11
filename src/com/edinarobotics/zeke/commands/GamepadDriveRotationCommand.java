@@ -1,37 +1,53 @@
 package com.edinarobotics.zeke.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import com.edinarobotics.utils.gamepad.Gamepad;
 import com.edinarobotics.zeke.Components;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 
+import edu.wpi.first.wpilibj.command.Command;
+
 public class GamepadDriveRotationCommand extends Command {
-    private Gamepad gamepad;
-    private DrivetrainRotation drivetrainRotation;
-    
-    public GamepadDriveRotationCommand(Gamepad gamepad) {
-        super("GamepadDriveRotation");
-        this.gamepad = gamepad;
-        this.drivetrainRotation = Components.getInstance().drivetrainRotation;
-        requires(drivetrainRotation);
-    }
 
-    protected void initialize() {
-    }
+	private Gamepad gamepad;
+	private DrivetrainRotation drivetrain;
+	
+	public GamepadDriveRotationCommand(Gamepad gamepad) {
+		super("GamepadDriveRotationCommand");
+		this.gamepad = gamepad;
+		drivetrain = Components.getInstance().drivetrainRotation;
+		requires(drivetrain);
+	}
+	
+	
+	
+	@Override
+	protected void initialize() {
+		
+	}
 
-    protected void execute() {
-        double rotation = gamepad.getGamepadAxisState().getRightJoystick().getX();
-        drivetrainRotation.setMecanumPolarRotate(rotation);
-    }
+	@Override
+	protected void execute() {
+		double rotation = gamepad.getRightX();
+		
+		drivetrain.setRotation(rotation);
+	}
 
-    protected boolean isFinished() {
-        return false;
-    }
+	@Override
+	protected boolean isFinished() {
+		return false;
+	}
 
-    protected void end() {
-    }
-    
-    protected void interrupted() {
-        end();
-    }
+	@Override
+	protected void end() {
+		drivetrain.setRotation(0.0);
+		
+	}
+
+	@Override
+	protected void interrupted() {
+		end();
+	}
+	
+	
+
 }

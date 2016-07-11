@@ -1,46 +1,50 @@
-
 package com.edinarobotics.zeke.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import com.edinarobotics.utils.gamepad.Gamepad;
-import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.Components;
+import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 public class GamepadDriveStrafeCommand extends Command {
-    private Gamepad gamepad;
-    private DrivetrainStrafe drivetrainStrafe;
-    private boolean flipped;
-    
-    public GamepadDriveStrafeCommand(Gamepad gamepad) {
-        super("GamepadDriveStrafe");
-        this.gamepad = gamepad;
-        this.drivetrainStrafe = Components.getInstance().drivetrainStrafe;
-        flipped = false;
-        requires(drivetrainStrafe);
-    }
 
-    protected void initialize() {
-    }
+	private Gamepad gamepad;
+	private DrivetrainStrafe drivetrain;
+	
+	public GamepadDriveStrafeCommand(Gamepad gamepad) {
+		super("gamepaddrivecommand");
+		this.gamepad = gamepad;
+		drivetrain = Components.getInstance().drivetrainStrafe;
+		requires(drivetrain);
+	}
+	
+	@Override
+	protected void initialize() {
+		
+	}
 
-    protected void execute() {
-        double magnitude = gamepad.getGamepadAxisState().getLeftMagnitude();
-        double direction = gamepad.getGamepadAxisState().getLeftDirection();
-        double flipValue = (flipped ? 180.0 : 0.0);
-        drivetrainStrafe.setMecanumPolarStrafe(magnitude, direction + flipValue);
-    }
-    
-    public void setFlipped(boolean flip){
-        this.flipped = flip;
-    }
+	@Override
+	protected void execute() {
+		double magnitude = gamepad.getGamepadAxisState().getLeftMagnitude();
+		double direction = gamepad.getGamepadAxisState().getLeftDirection();
+		
+		drivetrain.setStrafe(magnitude, direction);
+	}
 
-    protected boolean isFinished() {
-        return false;
-    }
+	@Override
+	protected boolean isFinished() {
+		return false;
+	}
 
-    protected void end() {
-    }
+	@Override
+	protected void end() {
+		drivetrain.setStrafe(0.0,0.0);
+		
+	}
 
-    protected void interrupted() {
-        end();
-    }
+	@Override
+	protected void interrupted() {
+		end();
+	}
+
 }

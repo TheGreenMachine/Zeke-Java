@@ -1,14 +1,11 @@
 package com.edinarobotics.zeke;
 
-import com.edinarobotics.utils.log.Level;
-import com.edinarobotics.utils.log.LogSystem;
-import com.edinarobotics.utils.log.Logger;
 import com.edinarobotics.zeke.subsystems.Collector;
 import com.edinarobotics.zeke.subsystems.Drivetrain;
 import com.edinarobotics.zeke.subsystems.DrivetrainRotation;
 import com.edinarobotics.zeke.subsystems.DrivetrainStrafe;
 import com.edinarobotics.zeke.subsystems.Shooter;
-import com.edinarobotics.zeke.vision.VisionServer;
+
 import edu.wpi.first.wpilibj.Compressor;
 
 /**
@@ -18,64 +15,81 @@ import edu.wpi.first.wpilibj.Compressor;
  * floating around.
  */
 public class Components {
-    private static Components instance;
-    private static final Logger logger = LogSystem.getLogger("zeke.components");
     
-    public static final boolean IS_PRACTICEBOT = false; //Practice bot switch
-    private RobotComponentsMapping mapping;
-    
-    // Subsystems
-    public final Drivetrain drivetrain;
-    public final DrivetrainStrafe drivetrainStrafe;
-    public final DrivetrainRotation drivetrainRotation; 
-    public final Shooter shooter;
-    public final Collector collector;
-    // END Subsystems
-    
-    //Vision Server
-    public final VisionServer visionServer;
-    
-    // Compressor
-    public final Compressor compressor;
-    
-    /**
-     * Private constructor for the Components singleton. This constructor
-     * is only called once and handles creating all the robot subsystems.
-     */
-    private Components(){
-        if(IS_PRACTICEBOT){
-            mapping = new PracticeRobotComponentsMapping();
-            logger.log(Level.INFO, "Started in practice bot mode.");
-        }
-        else{
-            mapping = new RobotComponentsMapping();
-            logger.log(Level.INFO, "Started in competition bot mode.");
-        }
-        drivetrain = new Drivetrain(mapping.FRONT_LEFT_DRIVE, mapping.REAR_LEFT_DRIVE,
-                mapping.FRONT_RIGHT_DRIVE, mapping.REAR_RIGHT_DRIVE, mapping.ULTRASONIC_SENSOR);
-        drivetrainStrafe = new DrivetrainStrafe(drivetrain);
-        drivetrainRotation = new DrivetrainRotation(drivetrain);
-        shooter = new Shooter(mapping.WINCH_TALON, mapping.SHOOTER_DOUBLESOLENOID_FORWARD,
-                mapping.SHOOTER_DOUBLESOLENOID_REVERSE, mapping.PUSHER_DOUBLESOLENOID_FORWARD,
-                mapping.PUSHER_DOUBLESOLENOID_REVERSE, mapping.SHOOTER_LOWER_LIMIT);
-        collector = new Collector(mapping.COLLECTOR_FRONT_TALON, mapping.COLLECTOR_BACK_TALON, 
-                    mapping.COLLECTOR_DOUBLESOLENOID_FORWARD, mapping.COLLECTOR_DOUBLESOLENOID_REVERSE,
-                    mapping.COLLECTOR_DOUBLESOLENOID_VALVE_ON, mapping.COLLECTOR_DOUBLESOLENOID_VALVE_OFF);
-        compressor = new Compressor(mapping.COMPRESSOR_PRESSURE_SWITCH, mapping.COMPRESSOR_RELAY);
-        compressor.start();
-        visionServer = VisionServer.getInstance();
-        visionServer.setPort(mapping.VISION_SERVER_PORT);
-    }
-    
-    /**
-     * Returns a new instance of {@link Components}, creating one if null.
-     * @return {@link Components}
-     */
-    public static Components getInstance() {
-        if(instance == null){
-            instance = new Components();
-        }
-        return instance;
-    }
-    
+	private static Components instance;
+	public Drivetrain drivetrain;
+	public DrivetrainRotation drivetrainRotation;
+	public DrivetrainStrafe drivetrainStrafe;
+	public Shooter shooter;
+	public Collector collector;
+	public Compressor compressor;
+	
+	// CAN Constants
+		// Drivetrain Constants
+		private static final int FRONT_LEFT_CANTALON = 2;
+		private static final int FRONT_RIGHT_CANTALON = 1;
+		private static final int BACK_LEFT_CANTALON = 6;
+		private static final int BACK_RIGHT_CANTALON = 3;
+		// End Drivetrain Constants
+		
+		//Shooter Constants
+		private static final int SHOOTER_WINCH = 5;
+		//End Shooter Constants
+	
+	// End CAN Constants
+		
+	// DIO Constants
+		// Shooter Constants
+		private static final int SHOOTER_LIMIT_SWITCH = 0;
+		// End Shooter Constants
+		
+	//End DIO Constants
+		
+	// Pneumatic Constants
+		// Pneumatic Control Module
+		private static final int PCM_NODE_ID = 10;
+		// End Pneumatic Control Module
+		
+		// Shooter Constants
+		private static final int SHOOTER_FORWARD = 1;
+		private static final int SHOOTER_BACKWARD = 3;
+		// End Shooter Constants
+		
+		// Collector Constants
+		private static final int COLLECTOR_FORWARD = 0;
+		private static final int COLLECTOR_BACKWARD = 1;
+		// End Collector Constants
+		
+	// End Pneumatic Constants
+		
+	// Relay Constants
+		// Collector Constants
+		private static final int RELAY_PORT = 1;
+		// End Collector Constants
+		
+	//End Relay Constants
+	
+	private Components() {
+		drivetrain = new Drivetrain(FRONT_LEFT_CANTALON, FRONT_RIGHT_CANTALON, BACK_LEFT_CANTALON, 
+				BACK_RIGHT_CANTALON);
+		
+		drivetrainStrafe = new DrivetrainStrafe(drivetrain);
+		drivetrainRotation = new DrivetrainRotation(drivetrain);
+		
+		shooter = new Shooter(SHOOTER_WINCH, SHOOTER_LIMIT_SWITCH, PCM_NODE_ID, SHOOTER_FORWARD, SHOOTER_BACKWARD);
+		
+		collector = new Collector(RELAY_PORT, PCM_NODE_ID, COLLECTOR_FORWARD, COLLECTOR_BACKWARD);
+		
+		compressor = new Compressor(PCM_NODE_ID);
+		compressor.start();
+	}
+	
+	public static Components getInstance() {
+		if (instance == null) {
+			instance = new Components();
+		}
+		
+		return instance;
+	}
+	
 }
